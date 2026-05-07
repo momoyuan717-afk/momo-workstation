@@ -235,12 +235,46 @@
           <button class="momo-modal-close" aria-label="关闭">×</button>
         </div>
         <div class="momo-modal-body">
-          <div class="momo-drop-zone" id="momo-drop-zone">
-            <div class="momo-drop-icon">📂</div>
-            <div class="momo-drop-text">拖拽文件到此处，或 <span class="momo-drop-link">点击选择</span></div>
-            <div class="momo-drop-hint">支持 PDF / PPT / PPTX / 图片，单文件 ≤ 50 MB</div>
-            <input type="file" id="momo-file-input" accept=".pdf,.ppt,.pptx,.png,.jpg,.jpeg,.gif,.webp,.svg" style="display:none">
+          <!-- Tab 切换 -->
+          <div class="momo-tabs">
+            <button class="momo-tab active" data-tab="file">📁 上传文件</button>
+            <button class="momo-tab" data-tab="link">🔗 粘贴链接</button>
           </div>
+
+          <!-- 文件上传 tab -->
+          <div class="momo-tab-pane" id="momo-pane-file">
+            <div class="momo-drop-zone" id="momo-drop-zone">
+              <span class="momo-drop-icon">📂</span>
+              <div class="momo-drop-text">拖拽文件到此处，或 <span class="momo-drop-link">点击选择</span></div>
+              <div class="momo-drop-hint">PDF / PPT / PPTX / 图片，单文件 ≤ 50 MB</div>
+              <input type="file" id="momo-file-input" accept=".pdf,.ppt,.pptx,.png,.jpg,.jpeg,.gif,.webp,.svg" style="display:none">
+            </div>
+          </div>
+
+          <!-- 链接 tab -->
+          <div class="momo-tab-pane" id="momo-pane-link" style="display:none">
+            <div class="momo-link-form">
+              <div class="momo-field">
+                <label class="momo-label">文件名称 <span class="momo-required">*</span></label>
+                <input class="momo-input" id="momo-link-name" type="text" placeholder="例：小米SU7车型洞察报告2026">
+              </div>
+              <div class="momo-field">
+                <label class="momo-label">文件链接 <span class="momo-required">*</span></label>
+                <input class="momo-input" id="momo-link-url" type="url" placeholder="粘贴腾讯文档 / 飞书 / OneDrive 等分享链接">
+              </div>
+              <div class="momo-field">
+                <label class="momo-label">文件类型</label>
+                <div class="momo-type-pills">
+                  <label class="momo-pill"><input type="radio" name="momo-link-type" value="pdf" checked> PDF</label>
+                  <label class="momo-pill"><input type="radio" name="momo-link-type" value="ppt"> PPT</label>
+                  <label class="momo-pill"><input type="radio" name="momo-link-type" value="image"> 图片</label>
+                  <label class="momo-pill"><input type="radio" name="momo-link-type" value="other"> 其他</label>
+                </div>
+              </div>
+              <button class="momo-submit-btn" id="momo-link-submit">保存链接</button>
+            </div>
+          </div>
+
           <div class="momo-status" id="momo-status"></div>
         </div>
       </div>
@@ -251,6 +285,53 @@
     // 关闭
     overlay.querySelector('.momo-modal-close').addEventListener('click', closeModal);
     overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+
+    // Tab 切换
+    overlay.querySelectorAll('.momo-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        overlay.querySelectorAll('.momo-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const pane = tab.dataset.tab;
+        overlay.querySelector('#momo-pane-file').style.display = pane === 'file' ? '' : 'none';
+        overlay.querySelector('#momo-pane-link').style.display = pane === 'link' ? '' : 'none';
+        overlay.querySelector('#momo-status').innerHTML = '';
+      });
+    });
+
+    // 链接提交
+    overlay.querySelector('#momo-link-submit').addEventListener('click', async () => {
+      const name = overlay.querySelector('#momo-link-name').value.trim();
+      const url  = overlay.querySelector('#momo-link-url').value.trim();
+      const type = overlay.querySelector('input[name="momo-link-type"]:checked').value;
+      if (!name) { setStatus('error', '请填写文件名称'); return; }
+      if (!url)  { setStatus('error', '请粘贴文件链接'); return; }
+
+      setStatus('loading', '正在保存链接…');
+      try {
+        const { list, sha } = await readFilesJson();
+        const ts = Date.now();
+        const newRecord = {
+          id: String(ts),
+          fileName: name,
+          fileUrl: url,
+          fileType: type,
+          client: currentSection.client,
+          category: currentSection.category,
+          uploadTime: new Date().toISOString()
+        };
+        list.push(newRecord);
+        await writeFilesJson(list, sha);
+
+        allFilesRef.length = 0;
+        list.forEach(f => allFilesRef.push(f));
+        document.querySelectorAll('.file-list').forEach(c => refreshContainer(c, allFilesRef));
+
+        setStatus('success', `✅ 「${name}」已保存！`);
+        setTimeout(closeModal, 1800);
+      } catch (err) {
+        setStatus('error', '保存失败：' + err.message);
+      }
+    });
 
     // 文件选择
     const dropZone = overlay.querySelector('#momo-drop-zone');
@@ -285,6 +366,13 @@
     // 重置状态
     modalEl.querySelector('#momo-status').innerHTML = '';
     modalEl.querySelector('#momo-file-input').value = '';
+    modalEl.querySelector('#momo-link-name').value = '';
+    modalEl.querySelector('#momo-link-url').value = '';
+
+    // 重置 tab 为第一个
+    modalEl.querySelectorAll('.momo-tab').forEach((t, i) => t.classList.toggle('active', i === 0));
+    modalEl.querySelector('#momo-pane-file').style.display = '';
+    modalEl.querySelector('#momo-pane-link').style.display = 'none';
 
     // 重置 drop-zone
     const dz = modalEl.querySelector('#momo-drop-zone');
@@ -467,6 +555,97 @@
         padding: 8px 0;
         font-style: italic;
       }
+
+      /* ── Tabs ── */
+      .momo-tabs {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 16px;
+        background: #f1f5f9;
+        border-radius: 10px;
+        padding: 4px;
+      }
+      .momo-tab {
+        flex: 1;
+        padding: 8px 0;
+        font-size: 13px;
+        font-weight: 500;
+        color: #64748b;
+        background: transparent;
+        border: none;
+        border-radius: 7px;
+        cursor: pointer;
+        transition: all 0.18s;
+        font-family: inherit;
+      }
+      .momo-tab.active {
+        background: #fff;
+        color: #1d4ed8;
+        box-shadow: 0 1px 4px rgba(15,23,42,0.08);
+      }
+      .momo-tab:hover:not(.active) { color: #334155; }
+
+      /* ── 链接表单 ── */
+      .momo-link-form { display: flex; flex-direction: column; gap: 14px; }
+      .momo-field { display: flex; flex-direction: column; gap: 5px; }
+      .momo-label { font-size: 12px; font-weight: 600; color: #475569; letter-spacing: 0.02em; }
+      .momo-required { color: #ef4444; }
+      .momo-input {
+        height: 38px;
+        padding: 0 12px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 13px;
+        color: #334155;
+        background: #f8fafc;
+        outline: none;
+        transition: border-color 0.18s, box-shadow 0.18s;
+        font-family: inherit;
+        width: 100%;
+      }
+      .momo-input:focus { border-color: #60a5fa; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); background: #fff; }
+      .momo-input::placeholder { color: #94a3b8; }
+
+      /* ── 文件类型选择 ── */
+      .momo-type-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+      .momo-pill {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 12px;
+        border: 1px solid #e2e8f0;
+        border-radius: 100px;
+        font-size: 12px;
+        font-weight: 500;
+        color: #64748b;
+        cursor: pointer;
+        transition: all 0.15s;
+        background: #f8fafc;
+        user-select: none;
+      }
+      .momo-pill input { display: none; }
+      .momo-pill:has(input:checked) {
+        border-color: #3b82f6;
+        background: #eff8ff;
+        color: #1d4ed8;
+      }
+
+      /* ── 提交按钮 ── */
+      .momo-submit-btn {
+        height: 40px;
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity 0.18s, transform 0.15s;
+        font-family: inherit;
+        letter-spacing: 0.02em;
+      }
+      .momo-submit-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+      .momo-submit-btn:active { transform: translateY(0); }
 
       /* ── Modal 遮罩 ── */
       #momo-modal-overlay {
