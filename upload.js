@@ -473,81 +473,163 @@
         display: none;
         position: fixed;
         inset: 0;
-        background: rgba(15,23,42,0.35);
+        background: rgba(15,23,42,0.28);
         z-index: 9999;
         align-items: center;
         justify-content: center;
-        backdrop-filter: blur(2px);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
       }
 
       /* ── Modal 主体 ── */
       .momo-modal {
         background: #fff;
         border-radius: 16px;
-        width: 480px;
+        width: 460px;
         max-width: 94vw;
-        box-shadow: 0 24px 64px rgba(15,23,42,0.16);
+        box-shadow: 0 20px 60px rgba(15,23,42,0.12), 0 0 0 1px rgba(226,232,240,0.8);
         overflow: hidden;
-        animation: momo-slide-up 0.22s ease;
+        animation: momo-slide-up 0.2s cubic-bezier(0.16,1,0.3,1);
+        font-family: 'MiSans','MiSans VF','FZLanTingHei','PingFang SC',-apple-system,sans-serif;
       }
       @keyframes momo-slide-up {
-        from { transform: translateY(20px); opacity: 0; }
-        to   { transform: translateY(0);    opacity: 1; }
+        from { transform: translateY(16px) scale(0.98); opacity: 0; }
+        to   { transform: translateY(0) scale(1);       opacity: 1; }
+      }
+
+      /* Modal 顶部蓝色细线 */
+      .momo-modal::before {
+        content: '';
+        display: block;
+        height: 3px;
+        background: linear-gradient(90deg, #3b82f6, #60a5fa);
       }
 
       .momo-modal-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 20px 24px 16px;
+        padding: 18px 24px 14px;
         border-bottom: 1px solid #f1f5f9;
       }
       .momo-modal-title {
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 600;
         color: #0f172a;
+        letter-spacing: 0.01em;
       }
       .momo-modal-close {
         width: 28px; height: 28px;
         border-radius: 8px;
         border: none;
-        background: #f1f5f9;
-        color: #64748b;
-        font-size: 16px;
+        background: transparent;
+        color: #94a3b8;
+        font-size: 18px;
         cursor: pointer;
         display: flex; align-items: center; justify-content: center;
         line-height: 1;
         padding: 0;
+        transition: background 0.15s, color 0.15s;
       }
-      .momo-modal-close:hover { background: #e2e8f0; color: #0f172a; }
+      .momo-modal-close:hover { background: #f1f5f9; color: #0f172a; }
 
-      .momo-modal-body { padding: 24px; }
+      .momo-modal-body { padding: 20px 24px 24px; }
 
       /* ── 拖拽区域 ── */
       .momo-drop-zone {
-        border: 2px dashed #cbd5e1;
+        border: 1.5px dashed #bfdbfe;
         border-radius: 12px;
-        padding: 36px 20px;
+        padding: 40px 24px 32px;
         text-align: center;
         cursor: pointer;
         transition: border-color 0.2s, background 0.2s;
         background: #f8fafc;
+        position: relative;
       }
       .momo-drop-zone:hover, .momo-drop-zone.drag-over {
-        border-color: #60a5fa;
+        border-color: #3b82f6;
         background: #eff8ff;
       }
-      .momo-drop-icon { font-size: 36px; margin-bottom: 10px; }
-      .momo-drop-text { font-size: 14px; color: #334155; }
-      .momo-drop-link { color: #2563eb; text-decoration: underline; }
-      .momo-drop-hint { font-size: 12px; color: #94a3b8; margin-top: 6px; }
+      .momo-drop-icon {
+        font-size: 32px;
+        margin-bottom: 12px;
+        display: block;
+        opacity: 0.85;
+      }
+      .momo-drop-text {
+        font-size: 14px;
+        color: #334155;
+        font-weight: 500;
+        margin-bottom: 6px;
+      }
+      .momo-drop-link {
+        color: #2563eb;
+        font-weight: 600;
+        text-decoration: none;
+        border-bottom: 1px solid #bfdbfe;
+        padding-bottom: 1px;
+      }
+      .momo-drop-hint {
+        font-size: 12px;
+        color: #94a3b8;
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+      .momo-drop-hint::before, .momo-drop-hint::after {
+        content: '';
+        flex: 1;
+        max-width: 40px;
+        height: 1px;
+        background: #e2e8f0;
+      }
 
       /* ── 状态消息 ── */
-      .momo-status { margin-top: 16px; font-size: 13px; border-radius: 8px; padding: 0; min-height: 0; }
+      .momo-status {
+        margin-top: 14px;
+        font-size: 13px;
+        border-radius: 8px;
+        padding: 0;
+        min-height: 0;
+        transition: all 0.2s;
+      }
       .momo-status:empty { display: none; }
-      .momo-status-loading { color: #2563eb; padding: 10px 14px; background: #eff8ff; border: 1px solid #bfdbfe; }
-      .momo-status-success { color: #15803d; padding: 10px 14px; background: #f0fdf4; border: 1px solid #bbf7d0; }
-      .momo-status-error   { color: #b91c1c; padding: 10px 14px; background: #fef2f2; border: 1px solid #fecaca; }
+      .momo-status-loading {
+        color: #1d4ed8;
+        padding: 10px 14px;
+        background: #eff8ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .momo-status-loading::before {
+        content: '';
+        width: 14px; height: 14px;
+        border: 2px solid #bfdbfe;
+        border-top-color: #3b82f6;
+        border-radius: 50%;
+        animation: momo-spin 0.7s linear infinite;
+        flex-shrink: 0;
+      }
+      @keyframes momo-spin { to { transform: rotate(360deg); } }
+      .momo-status-success {
+        color: #15803d;
+        padding: 10px 14px;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 8px;
+      }
+      .momo-status-error {
+        color: #b91c1c;
+        padding: 10px 14px;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+      }
     `;
     document.head.appendChild(style);
   }
