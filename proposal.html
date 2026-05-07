@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>客户提案 · momo workstation</title>
+  <style>
+    :root {
+      --blue-50: #eff8ff;
+      --blue-100: #dbeafe;
+      --blue-300: #93c5fd;
+      --blue-400: #60a5fa;
+      --blue-500: #3b82f6;
+      --blue-600: #2563eb;
+      --slate-50: #f8fafc;
+      --slate-100: #f1f5f9;
+      --slate-200: #e2e8f0;
+      --slate-300: #cbd5e1;
+      --slate-400: #94a3b8;
+      --slate-500: #64748b;
+      --slate-700: #334155;
+      --slate-900: #0f172a;
+      --accent: #2563eb;
+      --accent-bg: #eff8ff;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'MiSans', 'MiSans VF', 'FZLanTingHei', 'PingFang SC', -apple-system, sans-serif;
+      background: var(--slate-50);
+      color: var(--slate-700);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      background: #fff;
+      border-bottom: 1px solid var(--slate-200);
+      padding: 0 48px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo { font-size: 15px; font-weight: 600; color: var(--slate-900); }
+    .logo span { color: var(--accent); }
+    nav { display: flex; gap: 32px; }
+    nav a { font-size: 14px; color: var(--slate-500); text-decoration: none; transition: color 0.2s; }
+    nav a:hover, nav a.active { color: var(--accent); }
+
+    /* Page hero */
+    .page-hero {
+      padding: 56px 48px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .breadcrumb {
+      font-size: 12px;
+      color: var(--slate-400);
+      margin-bottom: 12px;
+    }
+    .breadcrumb a { color: var(--slate-400); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .page-hero h1 {
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--slate-900);
+      margin-bottom: 8px;
+    }
+    .page-hero p { font-size: 14px; color: var(--slate-400); }
+
+    /* Main */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    /* Client block */
+    .client-block {}
+    .client-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .client-name {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .client-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--blue-50);
+      border: 1px solid var(--blue-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .client-name h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--slate-900);
+    }
+
+    /* Sub-category panels */
+    .sub-panels {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* 每个子板块 */
+    .sub-panel {
+      background: #fff;
+      border: 1px solid var(--slate-200);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .sub-panel:hover { box-shadow: 0 4px 16px rgba(59,130,246,0.07); }
+
+    .sub-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--slate-100);
+      background: var(--slate-50);
+    }
+    .sub-panel-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sub-panel-num {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--slate-300);
+    }
+    .sub-panel-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--slate-700);
+    }
+    .sub-panel-body {
+      padding: 16px 20px 20px;
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: var(--slate-200);
+      margin: 0;
+    }
+
+    footer {
+      border-top: 1px solid var(--slate-200);
+      padding: 24px 48px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--slate-400);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">momo <span>workstation</span></div>
+    <nav>
+      <a href="index.html">首页</a>
+      <a href="proposal.html" class="active">客户提案</a>
+      <a href="industry.html">行业通案</a>
+      <a href="system.html">系统/产品使用说明</a>
+    </nav>
+  </header>
+
+  <div class="page-hero">
+    <div class="breadcrumb"><a href="index.html">首页</a> / 客户提案</div>
+    <h1>客户提案</h1>
+    <p>按客户分类，包含车型洞察、TTT 材料、专项方案与案例 One-pager</p>
+  </div>
+
+  <main>
+
+    <!-- 小米 -->
+    <div class="client-block">
+      <div class="client-header">
+        <div class="client-name">
+          <div class="client-badge">🚗</div>
+          <h2>小米</h2>
+        </div>
+      </div>
+      <div class="sub-panels">
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title">
+              <span class="sub-panel-num">01</span>
+              <span class="sub-panel-name">车型洞察</span>
+            </div>
+            <button class="upload-btn" data-client="小米" data-category="车型洞察">+ 上传</button>
+          </div>
+          <div class="sub-panel-body">
+            <div class="file-list" data-client="小米" data-category="车型洞察"></div>
+          </div>
+        </div>
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title">
+              <span class="sub-panel-num">02</span>
+              <span class="sub-panel-name">TTT材料</span>
+            </div>
+            <button class="upload-btn" data-client="小米" data-category="TTT材料">+ 上传</button>
+          </div>
+          <div class="sub-panel-body">
+            <div class="file-list" data-client="小米" data-category="TTT材料"></div>
+          </div>
+        </div>
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title">
+              <span class="sub-panel-num">03</span>
+              <span class="sub-panel-name">其他专项</span>
+            </div>
+            <button class="upload-btn" data-client="小米" data-category="其他专项">+ 上传</button>
+          </div>
+          <div class="sub-panel-body">
+            <div class="file-list" data-client="小米" data-category="其他专项"></div>
+          </div>
+        </div>
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title">
+              <span class="sub-panel-num">04</span>
+              <span class="sub-panel-name">IP大事件方案</span>
+            </div>
+            <button class="upload-btn" data-client="小米" data-category="IP大事件方案">+ 上传</button>
+          </div>
+          <div class="sub-panel-body">
+            <div class="file-list" data-client="小米" data-category="IP大事件方案"></div>
+          </div>
+        </div>
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title">
+              <span class="sub-panel-num">05</span>
+              <span class="sub-panel-name">案例Onepage</span>
+            </div>
+            <button class="upload-btn" data-client="小米" data-category="案例Onepage">+ 上传</button>
+          </div>
+          <div class="sub-panel-body">
+            <div class="file-list" data-client="小米" data-category="案例Onepage"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 极氪 -->
+    <div class="client-block">
+      <div class="client-header">
+        <div class="client-name">
+          <div class="client-badge">⚡</div>
+          <h2>极氪</h2>
+        </div>
+      </div>
+      <div class="sub-panels">
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title"><span class="sub-panel-num">01</span><span class="sub-panel-name">车型洞察</span></div>
+            <button class="upload-btn" data-client="极氪" data-category="车型洞察">+ 上传</button>
+          </div>
+          <div class="sub-panel-body"><div class="file-list" data-client="极氪" data-category="车型洞察"></div></div>
+        </div>
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title"><span class="sub-panel-num">02</span><span class="sub-panel-name">TTT材料</span></div>
+            <button class="upload-btn" data-client="极氪" data-category="TTT材料">+ 上传</button>
+          </div>
+          <div class="sub-panel-body"><div class="file-list" data-client="极氪" data-category="TTT材料"></div></div>
+        </div>
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title"><span class="sub-panel-num">03</span><span class="sub-panel-name">其他专项</span></div>
+            <button class="upload-btn" data-client="极氪" data-category="其他专项">+ 上传</button>
+          </div>
+          <div class="sub-panel-body"><div class="file-list" data-client="极氪" data-category="其他专项"></div></div>
+        </div>
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title"><span class="sub-panel-num">04</span><span class="sub-panel-name">IP大事件方案</span></div>
+            <button class="upload-btn" data-client="极氪" data-category="IP大事件方案">+ 上传</button>
+          </div>
+          <div class="sub-panel-body"><div class="file-list" data-client="极氪" data-category="IP大事件方案"></div></div>
+        </div>
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title"><span class="sub-panel-num">05</span><span class="sub-panel-name">案例Onepage</span></div>
+            <button class="upload-btn" data-client="极氪" data-category="案例Onepage">+ 上传</button>
+          </div>
+          <div class="sub-panel-body"><div class="file-list" data-client="极氪" data-category="案例Onepage"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 智界 -->
+    <div class="client-block">
+      <div class="client-header">
+        <div class="client-name">
+          <div class="client-badge">🔷</div>
+          <h2>智界</h2>
+        </div>
+      </div>
+      <div class="sub-panels">
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title"><span class="sub-panel-num">01</span><span class="sub-panel-name">车型洞察</span></div>
+            <button class="upload-btn" data-client="智界" data-category="车型洞察">+ 上传</button>
+          </div>
+          <div class="sub-panel-body"><div class="file-list" data-client="智界" data-category="车型洞察"></div></div>
+        </div>
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title"><span class="sub-panel-num">02</span><span class="sub-panel-name">TTT材料</span></div>
+            <button class="upload-btn" data-client="智界" data-category="TTT材料">+ 上传</button>
+          </div>
+          <div class="sub-panel-body"><div class="file-list" data-client="智界" data-category="TTT材料"></div></div>
+        </div>
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title"><span class="sub-panel-num">03</span><span class="sub-panel-name">其他专项</span></div>
+            <button class="upload-btn" data-client="智界" data-category="其他专项">+ 上传</button>
+          </div>
+          <div class="sub-panel-body"><div class="file-list" data-client="智界" data-category="其他专项"></div></div>
+        </div>
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title"><span class="sub-panel-num">04</span><span class="sub-panel-name">IP大事件方案</span></div>
+            <button class="upload-btn" data-client="智界" data-category="IP大事件方案">+ 上传</button>
+          </div>
+          <div class="sub-panel-body"><div class="file-list" data-client="智界" data-category="IP大事件方案"></div></div>
+        </div>
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title"><span class="sub-panel-num">05</span><span class="sub-panel-name">案例Onepage</span></div>
+            <button class="upload-btn" data-client="智界" data-category="案例Onepage">+ 上传</button>
+          </div>
+          <div class="sub-panel-body"><div class="file-list" data-client="智界" data-category="案例Onepage"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 尚界 -->
+    <div class="client-block">
+      <div class="client-header">
+        <div class="client-name">
+          <div class="client-badge">🏔️</div>
+          <h2>尚界</h2>
+        </div>
+      </div>
+      <div class="sub-panels">
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title"><span class="sub-panel-num">01</span><span class="sub-panel-name">车型洞察</span></div>
+            <button class="upload-btn" data-client="尚界" data-category="车型洞察">+ 上传</button>
+          </div>
+          <div class="sub-panel-body"><div class="file-list" data-client="尚界" data-category="车型洞察"></div></div>
+        </div>
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title"><span class="sub-panel-num">02</span><span class="sub-panel-name">TTT材料</span></div>
+            <button class="upload-btn" data-client="尚界" data-category="TTT材料">+ 上传</button>
+          </div>
+          <div class="sub-panel-body"><div class="file-list" data-client="尚界" data-category="TTT材料"></div></div>
+        </div>
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title"><span class="sub-panel-num">03</span><span class="sub-panel-name">其他专项</span></div>
+            <button class="upload-btn" data-client="尚界" data-category="其他专项">+ 上传</button>
+          </div>
+          <div class="sub-panel-body"><div class="file-list" data-client="尚界" data-category="其他专项"></div></div>
+        </div>
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title"><span class="sub-panel-num">04</span><span class="sub-panel-name">IP大事件方案</span></div>
+            <button class="upload-btn" data-client="尚界" data-category="IP大事件方案">+ 上传</button>
+          </div>
+          <div class="sub-panel-body"><div class="file-list" data-client="尚界" data-category="IP大事件方案"></div></div>
+        </div>
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title"><span class="sub-panel-num">05</span><span class="sub-panel-name">案例Onepage</span></div>
+            <button class="upload-btn" data-client="尚界" data-category="案例Onepage">+ 上传</button>
+          </div>
+          <div class="sub-panel-body"><div class="file-list" data-client="尚界" data-category="案例Onepage"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 智己 -->
+    <div class="client-block">
+      <div class="client-header">
+        <div class="client-name">
+          <div class="client-badge">🌙</div>
+          <h2>智己</h2>
+        </div>
+      </div>
+      <div class="sub-panels">
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title"><span class="sub-panel-num">01</span><span class="sub-panel-name">车型洞察</span></div>
+            <button class="upload-btn" data-client="智己" data-category="车型洞察">+ 上传</button>
+          </div>
+          <div class="sub-panel-body"><div class="file-list" data-client="智己" data-category="车型洞察"></div></div>
+        </div>
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title"><span class="sub-panel-num">02</span><span class="sub-panel-name">TTT材料</span></div>
+            <button class="upload-btn" data-client="智己" data-category="TTT材料">+ 上传</button>
+          </div>
+          <div class="sub-panel-body"><div class="file-list" data-client="智己" data-category="TTT材料"></div></div>
+        </div>
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title"><span class="sub-panel-num">03</span><span class="sub-panel-name">其他专项</span></div>
+            <button class="upload-btn" data-client="智己" data-category="其他专项">+ 上传</button>
+          </div>
+          <div class="sub-panel-body"><div class="file-list" data-client="智己" data-category="其他专项"></div></div>
+        </div>
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title"><span class="sub-panel-num">04</span><span class="sub-panel-name">IP大事件方案</span></div>
+            <button class="upload-btn" data-client="智己" data-category="IP大事件方案">+ 上传</button>
+          </div>
+          <div class="sub-panel-body"><div class="file-list" data-client="智己" data-category="IP大事件方案"></div></div>
+        </div>
+        <div class="sub-panel">
+          <div class="sub-panel-header">
+            <div class="sub-panel-title"><span class="sub-panel-num">05</span><span class="sub-panel-name">案例Onepage</span></div>
+            <button class="upload-btn" data-client="智己" data-category="案例Onepage">+ 上传</button>
+          </div>
+          <div class="sub-panel-body"><div class="file-list" data-client="智己" data-category="案例Onepage"></div></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>momo workstation · 小红书汽车商业化</footer>
+
+  <script src="upload.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = [];
+      document.querySelectorAll('.upload-btn').forEach(btn => {
+        const client = btn.dataset.client;
+        const category = btn.dataset.category;
+        // 找到对应的 file-list 容器
+        const container = btn.closest('.sub-panel').querySelector('.file-list');
+        sections.push({ container, client, category, uploadBtn: btn });
+      });
+      window.MomoUpload.init(sections);
+    });
+  </script>
+</body>
+</html>
