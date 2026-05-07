@@ -93,25 +93,151 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .hero-desc {
-      max-width: 560px;
-      font-size: 15px;
-      color: var(--slate-500);
-      line-height: 1.8;
-      margin-bottom: 12px;
+    /* Hero layout: 左文字 + 右头像 */
+    .hero-body {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 40px;
     }
+    .hero-left { flex: 1; min-width: 0; }
+
+    /* 头像区域 */
+    .hero-avatar-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .hero-avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      border: 3px solid var(--blue-100);
+      background: var(--slate-100);
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-avatar:hover { border-color: var(--blue-400); }
+    .hero-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .hero-avatar-placeholder {
+      font-size: 36px;
+      line-height: 1;
+      color: var(--slate-300);
+    }
+    .hero-avatar-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(15,23,42,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.18s;
+      border-radius: 50%;
+      font-size: 11px;
+      color: #fff;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+    .hero-avatar:hover .hero-avatar-overlay { opacity: 1; }
+    .hero-avatar-hint {
+      font-size: 11px;
+      color: var(--slate-400);
+      text-align: center;
+    }
+
+    /* 工作状态 badge */
+    .hero-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--slate-500);
+      background: #fff;
+      border: 1px solid var(--slate-200);
+      border-radius: 100px;
+      padding: 5px 12px;
+      cursor: pointer;
+      transition: border-color 0.18s;
+      white-space: nowrap;
+    }
+    .hero-status-badge:hover { border-color: var(--blue-300); }
+    .hero-status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      flex-shrink: 0;
+    }
+    .hero-status-dot.busy { background: #f97316; }
+    .hero-status-dot.off  { background: #94a3b8; }
+
+    /* How to Work 高光块 */
     .hero-rule {
       font-size: 13px;
       color: var(--slate-500);
-      padding: 12px 20px;
+      padding: 14px 20px;
       background: var(--blue-50);
       border-left: 3px solid var(--blue-400);
-      border-radius: 0 6px 6px 0;
+      border-radius: 0 8px 8px 0;
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .hero-rule-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+    .hero-rule-desc {
+      font-size: 13px;
+      color: var(--slate-500);
+      line-height: 1.7;
+    }
+    .hero-rule-desc span { margin: 0 4px; color: var(--slate-300); }
+
+    /* 状态选择菜单 */
+    .status-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff;
+      border: 1px solid var(--slate-200);
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(15,23,42,0.10);
+      padding: 6px;
+      z-index: 200;
+      min-width: 140px;
+      display: none;
+    }
+    .status-menu.open { display: block; }
+    .status-option {
       display: flex;
       align-items: center;
       gap: 8px;
-      white-space: nowrap;
+      padding: 8px 12px;
+      border-radius: 7px;
+      font-size: 13px;
+      color: var(--slate-700);
+      cursor: pointer;
+      transition: background 0.15s;
     }
+    .status-option:hover { background: var(--slate-100); }
 
     /* Section */
     .section {
@@ -196,12 +322,112 @@
 
   <section class="hero">
     <div class="hero-tag">Workstation · 瑶玲</div>
-    <h1>这里是<em>瑶玲的工作台</em></h1>
-    <p class="hero-desc">执行项目之前，这里的内容或许能先满足你的需求，请优先查阅～</p>
-    <div class="hero-rule">
-      <strong>How to Work with 瑶玲：</strong><span>群聊优先于私聊 &nbsp;·&nbsp; 复杂问题请先整理清楚码字 &nbsp;·&nbsp; 会议以「快速拉齐」为美德</span>
+    <div class="hero-body">
+      <div class="hero-left">
+        <h1>这里是<em>瑶玲的工作台</em></h1>
+        <div class="hero-rule">
+          <div class="hero-rule-title">How to Work with 瑶玲</div>
+          <div class="hero-rule-desc">
+            执行项目之前，这里的内容或许能先满足你的需求，请优先查阅～
+            <br>
+            群聊优先于私聊<span>·</span>复杂问题请先整理清楚码字<span>·</span>会议以「快速拉齐」为美德
+          </div>
+        </div>
+      </div>
+
+      <!-- 头像 + 状态 -->
+      <div class="hero-avatar-wrap">
+        <div class="hero-avatar" id="avatarBtn" title="点击更换头像">
+          <div class="hero-avatar-placeholder" id="avatarPlaceholder">👤</div>
+          <img id="avatarImg" src="" alt="头像" style="display:none">
+          <div class="hero-avatar-overlay">更换头像</div>
+        </div>
+        <input type="file" id="avatarInput" accept="image/*" style="display:none">
+        <div style="position:relative;">
+          <div class="hero-status-badge" id="statusBadge">
+            <span class="hero-status-dot" id="statusDot"></span>
+            <span id="statusText">工作中</span>
+          </div>
+          <div class="status-menu" id="statusMenu">
+            <div class="status-option" data-status="online" data-label="工作中">
+              <span style="width:8px;height:8px;border-radius:50%;background:#22c55e;flex-shrink:0;display:inline-block;"></span> 工作中
+            </div>
+            <div class="status-option" data-status="busy" data-label="忙碌中">
+              <span style="width:8px;height:8px;border-radius:50%;background:#f97316;flex-shrink:0;display:inline-block;"></span> 忙碌中
+            </div>
+            <div class="status-option" data-status="off" data-label="休息中">
+              <span style="width:8px;height:8px;border-radius:50%;background:#94a3b8;flex-shrink:0;display:inline-block;"></span> 休息中
+            </div>
+          </div>
+        </div>
+        <div class="hero-avatar-hint">点击头像可更换</div>
+      </div>
     </div>
   </section>
+
+  <script>
+    // ── 头像（存 localStorage，纯本地）
+    const avatarBtn   = document.getElementById('avatarBtn');
+    const avatarInput = document.getElementById('avatarInput');
+    const avatarImg   = document.getElementById('avatarImg');
+    const avatarPlaceholder = document.getElementById('avatarPlaceholder');
+
+    function applyAvatar(dataUrl) {
+      avatarImg.src = dataUrl;
+      avatarImg.style.display = 'block';
+      avatarPlaceholder.style.display = 'none';
+    }
+
+    const savedAvatar = localStorage.getItem('momo_avatar');
+    if (savedAvatar) applyAvatar(savedAvatar);
+
+    avatarBtn.addEventListener('click', () => avatarInput.click());
+    avatarInput.addEventListener('change', () => {
+      const file = avatarInput.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        const dataUrl = e.target.result;
+        localStorage.setItem('momo_avatar', dataUrl);
+        applyAvatar(dataUrl);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // ── 工作状态（存 localStorage）
+    const statusDot    = document.getElementById('statusDot');
+    const statusText   = document.getElementById('statusText');
+    const statusBadge  = document.getElementById('statusBadge');
+    const statusMenu   = document.getElementById('statusMenu');
+
+    const STATUS_COLORS = { online: '#22c55e', busy: '#f97316', off: '#94a3b8' };
+
+    function applyStatus(status, label) {
+      statusDot.style.background = STATUS_COLORS[status] || '#22c55e';
+      statusDot.className = 'hero-status-dot';
+      statusText.textContent = label;
+      localStorage.setItem('momo_status', JSON.stringify({ status, label }));
+    }
+
+    const savedStatus = localStorage.getItem('momo_status');
+    if (savedStatus) {
+      const { status, label } = JSON.parse(savedStatus);
+      applyStatus(status, label);
+    }
+
+    statusBadge.addEventListener('click', e => {
+      e.stopPropagation();
+      statusMenu.classList.toggle('open');
+    });
+    document.addEventListener('click', () => statusMenu.classList.remove('open'));
+    statusMenu.querySelectorAll('.status-option').forEach(opt => {
+      opt.addEventListener('click', e => {
+        e.stopPropagation();
+        applyStatus(opt.dataset.status, opt.dataset.label);
+        statusMenu.classList.remove('open');
+      });
+    });
+  </script>
 
   <section class="section">
     <div class="section-label">快速入口</div>
