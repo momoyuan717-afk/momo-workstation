@@ -75,14 +75,36 @@
   async function readFilesJson() {
     const file = await ghGetFile(FILES_JSON);
     if (!file) return { list: [], sha: null };
-    const decoded = atob(file.content.replace(/\n/g, ''));
+    // 用 TextDecoder 正确处理 UTF-8（支持中文文件名）
+    const binary = atob(file.content.replace(/\n/g, ''));
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    const decoded = new TextDecoder('utf-8').decode(bytes);
     const list = JSON.parse(decoded);
     return { list, sha: file.sha };
   }
 
   async function writeFilesJson(list, sha) {
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(list, null, 2))));
-    await ghPutFile(FILES_JSON, content, 'update: files.json', sha);
+    const jsonStr = JSON.stringify(list, null, 2);
+    // 用 TextEncoder 处理中文，再转 base64，避免 btoa 报错
+    const bytes = new TextEncoder().encode(jsonStr);
+    let binary = '';
+    bytes.forEach(b => binary += String.fromCharCode(b));
+    const content = btoa(binary);
+
+    // 如果 sha 冲突（409），重新获取最新 sha 再重试一次
+    try {
+      await ghPutFile(FILES_JSON, content, 'update: files.json', sha);
+    } catch (err) {
+      if (err.message && (err.message.includes('409') || err.message.includes('conflict') || err.message.includes('sha'))) {
+        // 重新拉一次最新 sha
+        const fresh = await ghGetFile(FILES_JSON);
+        const freshSha = fresh ? fresh.sha : null;
+        await ghPutFile(FILES_JSON, content, 'update: files.json', freshSha);
+      } else {
+        throw err;
+      }
+    }
   }
 
   /* ─── 文件工具 ──────────────────────────────────────── */
@@ -326,8 +348,7 @@
         list.forEach(f => allFilesRef.push(f));
         document.querySelectorAll('.file-list').forEach(c => refreshContainer(c, allFilesRef));
 
-        setStatus('success', `✅ 「${name}」已保存！`);
-        setTimeout(closeModal, 1800);
+        setStatus('success', `✅ 「${name}」已保存！文件已归档，可关闭此窗口。`);
       } catch (err) {
         setStatus('error', '保存失败：' + err.message);
       }
@@ -442,10 +463,7 @@
       list.forEach(f => allFilesRef.push(f));
       document.querySelectorAll('.file-list').forEach(c => refreshContainer(c, allFilesRef));
 
-      setStatus('success', `✅ 「${file.name}」上传成功！`);
-
-      // 2 秒后关闭
-      setTimeout(closeModal, 2000);
+      setStatus('success', `✅ 「${file.name}」上传成功！文件已保存，可关闭此窗口。`);
 
     } catch (err) {
       setStatus('error', '上传失败：' + err.message);
