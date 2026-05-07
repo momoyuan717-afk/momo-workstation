@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>行业通案 · momo workstation</title>
+  <style>
+    :root {
+      --blue-50: #eff8ff;
+      --blue-100: #dbeafe;
+      --blue-300: #93c5fd;
+      --blue-400: #60a5fa;
+      --blue-500: #3b82f6;
+      --blue-600: #2563eb;
+      --slate-50: #f8fafc;
+      --slate-100: #f1f5f9;
+      --slate-200: #e2e8f0;
+      --slate-300: #cbd5e1;
+      --slate-400: #94a3b8;
+      --slate-500: #64748b;
+      --slate-700: #334155;
+      --slate-900: #0f172a;
+      --accent: #2563eb;
+      --accent-bg: #eff8ff;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'MiSans', 'MiSans VF', 'FZLanTingHei', 'PingFang SC', -apple-system, sans-serif;
+      background: var(--slate-50);
+      color: var(--slate-700);
+      min-height: 100vh;
+    }
+    header {
+      background: #fff;
+      border-bottom: 1px solid var(--slate-200);
+      padding: 0 48px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo { font-size: 15px; font-weight: 600; color: var(--slate-900); }
+    .logo span { color: var(--accent); }
+    nav { display: flex; gap: 32px; }
+    nav a { font-size: 14px; color: var(--slate-500); text-decoration: none; transition: color 0.2s; }
+    nav a:hover, nav a.active { color: var(--accent); }
+
+    .page-hero {
+      padding: 56px 48px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .breadcrumb { font-size: 12px; color: var(--slate-400); margin-bottom: 12px; }
+    .breadcrumb a { color: var(--slate-400); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .page-hero h1 { font-size: 28px; font-weight: 600; color: var(--slate-900); margin-bottom: 8px; }
+    .page-hero p { font-size: 14px; color: var(--slate-400); }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px 80px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .category-card {
+      background: #fff;
+      border: 1px solid var(--slate-200);
+      border-radius: 14px;
+      padding: 28px 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: all 0.22s;
+      position: relative;
+      overflow: hidden;
+    }
+    .category-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--blue-500), var(--blue-300));
+      opacity: 0;
+      transition: opacity 0.22s;
+    }
+    .category-card:hover { border-color: var(--blue-300); box-shadow: 0 8px 32px rgba(59,130,246,0.09); transform: translateY(-2px); }
+    .category-card:hover::before { opacity: 1; }
+
+    .cat-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cat-name {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .cat-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: var(--blue-50);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .cat-name h2 { font-size: 17px; font-weight: 600; color: var(--slate-900); }
+
+    .cat-desc {
+      font-size: 13px;
+      color: var(--slate-300);
+      line-height: 1.7;
+    }
+
+    .cat-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tag {
+      font-size: 12px;
+      color: var(--slate-500);
+      background: var(--slate-100);
+      border-radius: 6px;
+      padding: 4px 10px;
+    }
+
+    footer {
+      border-top: 1px solid var(--slate-200);
+      padding: 24px 48px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--slate-400);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">momo <span>workstation</span></div>
+    <nav>
+      <a href="index.html">首页</a>
+      <a href="proposal.html">客户提案</a>
+      <a href="industry.html" class="active">行业通案</a>
+      <a href="system.html">系统/产品使用说明</a>
+    </nav>
+  </header>
+
+  <div class="page-hero">
+    <div class="breadcrumb"><a href="index.html">首页</a> / 行业通案</div>
+    <h1>行业通案</h1>
+    <p>平台级、品牌级方案资产库，覆盖通案、IP 与产品方向</p>
+  </div>
+
+  <main>
+
+    <div class="category-card">
+      <div class="cat-top">
+        <div class="cat-name">
+          <div class="cat-icon">🗂️</div>
+          <h2>平台通案</h2>
+        </div>
+        <button class="upload-btn" data-client="" data-category="平台通案">+ 上传</button>
+      </div>
+      <div class="cat-desc">面向全行业的平台级整合营销方案，覆盖小红书核心产品与营销逻辑。</div>
+      <div class="cat-tags">
+        <span class="tag">整合营销</span>
+        <span class="tag">平台策略</span>
+        <span class="tag">汽车行业</span>
+      </div>
+      <div class="file-list" data-client="" data-category="平台通案"></div>
+    </div>
+
+    <div class="category-card">
+      <div class="cat-top">
+        <div class="cat-name">
+          <div class="cat-icon">🏷️</div>
+          <h2>一方通案</h2>
+        </div>
+        <button class="upload-btn" data-client="" data-category="一方通案">+ 上传</button>
+      </div>
+      <div class="cat-desc">面向单一品牌/客户定制的通用方案模板，可快速复用与落地。</div>
+      <div class="cat-tags">
+        <span class="tag">品牌定制</span>
+        <span class="tag">一方数据</span>
+        <span class="tag">投放策略</span>
+      </div>
+      <div class="file-list" data-client="" data-category="一方通案"></div>
+    </div>
+
+    <div class="category-card">
+      <div class="cat-top">
+        <div class="cat-name">
+          <div class="cat-icon">✨</div>
+          <h2>IP通案</h2>
+        </div>
+        <button class="upload-btn" data-client="" data-category="IP通案">+ 上传</button>
+      </div>
+      <div class="cat-desc">围绕平台重点 IP 活动的整合方案，含节点营销、事件借势与联名合作。</div>
+      <div class="cat-tags">
+        <span class="tag">IP 联名</span>
+        <span class="tag">节点营销</span>
+        <span class="tag">事件借势</span>
+      </div>
+      <div class="file-list" data-client="" data-category="IP通案"></div>
+    </div>
+
+    <div class="category-card">
+      <div class="cat-top">
+        <div class="cat-name">
+          <div class="cat-icon">📦</div>
+          <h2>平台产品通案</h2>
+        </div>
+        <button class="upload-btn" data-client="" data-category="平台产品通案">+ 上传</button>
+      </div>
+      <div class="cat-desc">针对小红书各商业化产品的专项方案，包含产品使用场景与效果说明。</div>
+      <div class="cat-tags">
+        <span class="tag">商业化产品</span>
+        <span class="tag">效果方案</span>
+        <span class="tag">场景化</span>
+      </div>
+      <div class="file-list" data-client="" data-category="平台产品通案"></div>
+    </div>
+
+  </main>
+
+  <footer>momo workstation · 小红书汽车商业化</footer>
+
+  <script src="upload.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = [];
+      document.querySelectorAll('.upload-btn').forEach(btn => {
+        const client = btn.dataset.client;
+        const category = btn.dataset.category;
+        // 找到同一 category-card 里的 file-list
+        const container = btn.closest('.category-card').querySelector('.file-list');
+        sections.push({ container, client, category, uploadBtn: btn });
+      });
+      window.MomoUpload.init(sections);
+    });
+  </script>
+</body>
+</html>
