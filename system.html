@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>系统/产品使用说明 · momo workstation</title>
+  <style>
+    :root {
+      --blue-50: #eff8ff;
+      --blue-100: #dbeafe;
+      --blue-300: #93c5fd;
+      --blue-400: #60a5fa;
+      --blue-500: #3b82f6;
+      --blue-600: #2563eb;
+      --slate-50: #f8fafc;
+      --slate-100: #f1f5f9;
+      --slate-200: #e2e8f0;
+      --slate-300: #cbd5e1;
+      --slate-400: #94a3b8;
+      --slate-500: #64748b;
+      --slate-700: #334155;
+      --slate-900: #0f172a;
+      --accent: #2563eb;
+      --accent-bg: #eff8ff;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'MiSans', 'MiSans VF', 'FZLanTingHei', 'PingFang SC', -apple-system, sans-serif;
+      background: var(--slate-50);
+      color: var(--slate-700);
+      min-height: 100vh;
+    }
+    header {
+      background: #fff;
+      border-bottom: 1px solid var(--slate-200);
+      padding: 0 48px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo { font-size: 15px; font-weight: 600; color: var(--slate-900); }
+    .logo span { color: var(--accent); }
+    nav { display: flex; gap: 32px; }
+    nav a { font-size: 14px; color: var(--slate-500); text-decoration: none; transition: color 0.2s; }
+    nav a:hover, nav a.active { color: var(--accent); }
+
+    .page-hero {
+      padding: 56px 48px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .breadcrumb { font-size: 12px; color: var(--slate-400); margin-bottom: 12px; }
+    .breadcrumb a { color: var(--slate-400); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .page-hero h1 { font-size: 28px; font-weight: 600; color: var(--slate-900); margin-bottom: 8px; }
+    .page-hero p { font-size: 14px; color: var(--slate-400); }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    /* Section */
+    .sys-section {}
+    .sys-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .sys-section-name {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sys-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: var(--blue-50);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .sys-section-name h2 { font-size: 17px; font-weight: 600; color: var(--slate-900); }
+
+    .divider { height: 1px; background: var(--slate-200); }
+
+    footer {
+      border-top: 1px solid var(--slate-200);
+      padding: 24px 48px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--slate-400);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">momo <span>workstation</span></div>
+    <nav>
+      <a href="index.html">首页</a>
+      <a href="proposal.html">客户提案</a>
+      <a href="industry.html">行业通案</a>
+      <a href="system.html" class="active">系统/产品使用说明</a>
+    </nav>
+  </header>
+
+  <div class="page-hero">
+    <div class="breadcrumb"><a href="index.html">首页</a> / 系统/产品使用说明</div>
+    <h1>系统/产品使用说明</h1>
+    <p>常用系统入口汇总与产品使用说明，快速找到所需工具</p>
+  </div>
+
+  <main>
+
+    <!-- 系统链接 -->
+    <div class="sys-section">
+      <div class="sys-section-header">
+        <div class="sys-section-name">
+          <div class="sys-icon">🔗</div>
+          <h2>系统链接</h2>
+        </div>
+        <button class="upload-btn" data-client="" data-category="系统链接">+ 上传</button>
+      </div>
+      <div class="file-list" data-client="" data-category="系统链接"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 产品使用说明 -->
+    <div class="sys-section">
+      <div class="sys-section-header">
+        <div class="sys-section-name">
+          <div class="sys-icon">📖</div>
+          <h2>产品使用说明</h2>
+        </div>
+        <button class="upload-btn" data-client="" data-category="产品使用说明">+ 上传</button>
+      </div>
+      <div class="file-list" data-client="" data-category="产品使用说明"></div>
+    </div>
+
+  </main>
+
+  <footer>momo workstation · 小红书汽车商业化</footer>
+
+  <script src="upload.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = [];
+      document.querySelectorAll('.upload-btn').forEach(btn => {
+        const client = btn.dataset.client;
+        const category = btn.dataset.category;
+        // 找到同一 sys-section 里的 file-list
+        const container = btn.closest('.sys-section').querySelector('.file-list');
+        sections.push({ container, client, category, uploadBtn: btn });
+      });
+      window.MomoUpload.init(sections);
+    });
+  </script>
+</body>
+</html>
