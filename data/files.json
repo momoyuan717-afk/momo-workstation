@@ -259,5 +259,14 @@
     "client": "",
     "category": "系统链接",
     "uploadTime": "2026-05-08T08:30:34.347Z"
+  },
+  {
+    "id": "1778230000159",
+    "fileName": "小红书专业号平台连接",
+    "fileUrl": "https://pro.xiaohongshu.com/login?redirectTo=%2Fenterprise%2Fhome",
+    "fileType": "other",
+    "client": "",
+    "category": "系统链接",
+    "uploadTime": "2026-05-08T08:46:40.159Z"
   }
 ]
