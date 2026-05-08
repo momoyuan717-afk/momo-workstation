@@ -331,5 +331,14 @@
     "client": "",
     "category": "系统链接-对外",
     "uploadTime": "2026-05-08T09:10:12.108Z"
+  },
+  {
+    "id": "1778231805750",
+    "fileName": "ALLIN（多ai模型）",
+    "fileUrl": "https://ai.devops.xiaohongshu.com/chatbot?tab=0&model=DirectLLM-dots.llm1.inst&workspaceId=0",
+    "fileType": "other",
+    "client": "",
+    "category": "系统链接-对内",
+    "uploadTime": "2026-05-08T09:16:45.750Z"
   }
 ]
