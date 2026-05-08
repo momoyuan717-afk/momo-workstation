@@ -75,12 +75,13 @@
   async function readFilesJson() {
     const file = await ghGetFile(FILES_JSON);
     if (!file) return { list: [], sha: null };
-    // 用 fetch raw URL 直接拿文本，避免 atob 中文乱码问题
-    const rawUrl = `${RAW_BASE}/${FILES_JSON}?t=${Date.now()}`;
-    const res = await fetch(rawUrl);
-    if (!res.ok) return { list: [], sha: file.sha };
-    const text = await res.text();
+    // 用 GitHub API 返回的 content 字段（base64），不走 raw CDN，无缓存问题
     try {
+      const base64Str = file.content.replace(/\n/g, '');
+      const binary = atob(base64Str);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+      const text = new TextDecoder('utf-8').decode(bytes);
       const list = JSON.parse(text);
       return { list, sha: file.sha };
     } catch (e) {
