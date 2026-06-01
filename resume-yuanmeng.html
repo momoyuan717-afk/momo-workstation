@@ -101,30 +101,40 @@
     /* ── 页面 ── */
     .page {
       width: 794px;
+      height: 1123px; /* A4: 297mm at 96dpi */
       margin: 28px auto;
       background: white;
       border-radius: 12px;
       box-shadow: 0 4px 32px rgba(15,23,42,0.09);
       overflow: hidden;
       page-break-after: always;
+      page-break-inside: avoid;
+      display: flex;
+      flex-direction: column;
     }
     .page:last-child { page-break-after: auto; margin-bottom: 28px; }
+    .body-wrap { flex: 1; overflow: hidden; }
+    .sidebar { height: 100%; overflow: hidden; }
+    .main { height: 100%; overflow: hidden; }
 
     @media print {
+      @page { size: A4; margin: 0; }
       body { background: white; }
       .page {
-        width: 100%;
+        width: 210mm;
+        height: 297mm;
         margin: 0;
         border-radius: 0;
         box-shadow: none;
         page-break-after: always;
+        page-break-inside: avoid;
       }
     }
 
     /* ── 顶部 Header（第一页） ── */
     .header {
       background: var(--sidebar-bg);
-      padding: 36px 48px 28px;
+      padding: 20px 40px 16px;
       display: flex;
       align-items: center;
       gap: 28px;
@@ -192,10 +202,10 @@
     /* ── 左栏 ── */
     .sidebar {
       background: #0f172a;
-      padding: 28px 22px 32px;
+      padding: 18px 18px 20px;
       color: white;
     }
-    .sb-section { margin-bottom: 26px; }
+    .sb-section { margin-bottom: 16px; }
     .sb-section:last-child { margin-bottom: 0; }
     .sb-title {
       font-size: 9.5px;
@@ -237,7 +247,7 @@
     }
 
     /* ── 右栏 ── */
-    .main { padding: 28px 36px 32px; }
+    .main { padding: 18px 28px 20px; }
 
     /* Section 标题 */
     .sec-title {
@@ -246,7 +256,7 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--blue);
-      margin-bottom: 18px;
+      margin-bottom: 12px;
       display: flex; align-items: center; gap: 8px;
     }
     .sec-title::after {
@@ -255,7 +265,7 @@
     }
 
     /* 工作经历条目 */
-    .job { margin-bottom: 22px; padding-left: 16px; position: relative; }
+    .job { margin-bottom: 12px; padding-left: 16px; position: relative; }
     .job:last-child { margin-bottom: 0; }
     .job::before {
       content: ''; position: absolute;
@@ -280,7 +290,7 @@
       margin-bottom: 1px;
     }
     .job-co {
-      font-size: 13.5px; font-weight: 700; color: var(--ink);
+      font-size: 12.5px; font-weight: 700; color: var(--ink);
     }
     .job-period {
       font-size: 11px; color: var(--ink-4);
@@ -289,16 +299,16 @@
     }
     .job-role {
       font-size: 11.5px; color: var(--blue);
-      font-weight: 500; margin-bottom: 6px;
+      font-weight: 500; margin-bottom: 3px;
     }
     .job-summary {
-      font-size: 11.5px; color: var(--ink-3);
-      margin-bottom: 7px; line-height: 1.65;
+      font-size: 10.5px; color: var(--ink-3);
+      margin-bottom: 4px; line-height: 1.55;
     }
-    .job-bullets { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+    .job-bullets { list-style: none; display: flex; flex-direction: column; gap: 3px; }
     .job-bullets li {
-      font-size: 11.5px; color: var(--ink-2);
-      line-height: 1.65; padding-left: 12px; position: relative;
+      font-size: 10.5px; color: var(--ink-2);
+      line-height: 1.55; padding-left: 12px; position: relative;
     }
     .job-bullets li::before {
       content: '—'; position: absolute; left: 0;
@@ -307,8 +317,8 @@
 
     /* 其他经历 */
     .misc-item {
-      font-size: 11.5px; color: #e2e8f0;
-      line-height: 1.65; margin-bottom: 6px;
+      font-size: 10.5px; color: #e2e8f0;
+      line-height: 1.55; margin-bottom: 5px;
       padding-left: 12px; position: relative;
     }
     .misc-item::before {
@@ -321,17 +331,17 @@
     /* 技能区域（右栏） */
     .skill-block { margin-bottom: 10px; }
     .skill-block-label {
-      font-size: 11.5px; font-weight: 600;
-      color: var(--ink); margin-bottom: 3px;
+      font-size: 10.5px; font-weight: 600;
+      color: var(--ink); margin-bottom: 2px;
     }
     .skill-block p {
-      font-size: 11.5px; color: var(--ink-3); line-height: 1.65;
+      font-size: 10.5px; color: var(--ink-3); line-height: 1.55;
     }
 
     /* 第二页 header bar */
     .page2-header {
       background: var(--sidebar-bg);
-      padding: 14px 48px;
+      padding: 10px 40px;
       display: flex; align-items: center;
       justify-content: space-between;
     }
@@ -486,7 +496,7 @@
   </div>
 
   <div class="body-wrap">
-    <aside class="sidebar" style="padding-top:24px;">
+    <aside class="sidebar" style="padding-top:18px;">
       <!-- 左栏留空或放补充信息 -->
       <div class="sb-section">
         <div class="sb-title">社会实践</div>
