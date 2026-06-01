@@ -40,27 +40,75 @@
       .sidebar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     }
 
-    /* ── 下载按钮 ── */
-    .download-btn {
+    /* ── 工具栏 ── */
+    .toolbar {
       position: fixed;
       bottom: 32px;
       right: 32px;
-      background: var(--blue);
-      color: white;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 999;
+    }
+    .download-btn, .edit-btn {
       border: none;
       border-radius: 12px;
       padding: 12px 22px;
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      box-shadow: 0 4px 20px rgba(37,99,235,0.35);
-      z-index: 999;
       display: flex;
       align-items: center;
       gap: 8px;
       transition: transform 0.15s, box-shadow 0.15s;
+      font-family: inherit;
+    }
+    .download-btn {
+      background: var(--blue);
+      color: white;
+      box-shadow: 0 4px 20px rgba(37,99,235,0.35);
     }
     .download-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,99,235,0.4); }
+    .edit-btn {
+      background: white;
+      color: var(--ink-2);
+      box-shadow: 0 4px 16px rgba(15,23,42,0.1);
+      border: 1px solid var(--border);
+    }
+    .edit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(15,23,42,0.12); }
+    .edit-btn.active { background: #fef9c3; color: #92400e; border-color: #fde68a; }
+
+    /* 编辑模式提示 */
+    .edit-hint {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e40af;
+      color: white;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 9px 20px;
+      border-radius: 20px;
+      box-shadow: 0 4px 16px rgba(30,64,175,0.3);
+      z-index: 1000;
+      white-space: nowrap;
+    }
+    body.editing .edit-hint { display: block; }
+
+    /* 编辑模式下可编辑元素高亮 */
+    body.editing [contenteditable]:hover {
+      outline: 1.5px dashed #60a5fa;
+      border-radius: 3px;
+      background: rgba(239,246,255,0.6);
+      cursor: text;
+    }
+    body.editing [contenteditable]:focus {
+      outline: 2px solid #2563eb;
+      border-radius: 3px;
+      background: #eff6ff;
+    }
 
     /* ── 页面容器 ── */
     .page {
@@ -94,14 +142,41 @@
       gap: 14px;
     }
     .avatar {
-      width: 80px; height: 80px;
+      width: 88px; height: 88px;
       border-radius: 50%;
       background: linear-gradient(135deg, #2563eb, #60a5fa);
       display: flex; align-items: center; justify-content: center;
-      font-size: 28px; font-weight: 700; color: white;
+      font-size: 22px; font-weight: 700; color: white;
       flex-shrink: 0;
       letter-spacing: 2px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      border: 3px solid rgba(255,255,255,0.15);
+      transition: opacity 0.2s;
     }
+    .avatar:hover { opacity: 0.85; }
+    .avatar img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+    .avatar-hint {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      color: white;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.2s;
+      letter-spacing: 0;
+      font-weight: 500;
+    }
+    .avatar:hover .avatar-hint { opacity: 1; }
     .name { font-size: 22px; font-weight: 700; letter-spacing: 2px; text-align: center; }
     .tagline {
       font-size: 11px;
@@ -315,9 +390,13 @@
 </head>
 <body>
 
-<button class="download-btn" onclick="window.print()">
-  ⬇ 下载 PDF
-</button>
+<div class="edit-hint">✏️ 编辑模式已开启，点击任意文字直接修改 · 再次点击「编辑」退出</div>
+<input type="file" id="avatar-input" accept="image/*" style="display:none">
+
+<div class="toolbar">
+  <button class="edit-btn" id="editToggle" onclick="toggleEdit()">✏️ 编辑文字</button>
+  <button class="download-btn" onclick="window.print()">⬇ 下载 PDF</button>
+</div>
 
 <div class="page">
 
@@ -325,9 +404,12 @@
   <aside class="sidebar">
 
     <div class="avatar-area">
-      <div class="avatar">袁梦</div>
-      <div class="name">袁 梦</div>
-      <div class="tagline">Brand Marketing · Operations</div>
+      <div class="avatar" id="avatarEl" onclick="document.getElementById('avatar-input').click()">
+        <span id="avatarText">袁梦</span>
+        <div class="avatar-hint">更换头像</div>
+      </div>
+      <div class="name" contenteditable="false">袁 梦</div>
+      <div class="tagline" contenteditable="false">Brand Marketing · Operations</div>
     </div>
 
     <div>
@@ -335,11 +417,11 @@
       <div class="contact-list">
         <div class="contact-item">
           <div class="contact-icon">📱</div>
-          <span>17316500306</span>
+          <span contenteditable="false">17316500306</span>
         </div>
         <div class="contact-item">
           <div class="contact-icon">✉️</div>
-          <span>2429142813@qq.com</span>
+          <span contenteditable="false">2429142813@qq.com</span>
         </div>
       </div>
     </div>
@@ -348,9 +430,9 @@
       <div class="sidebar-section-title">教育背景</div>
       <div class="edu-block">
         <div class="edu-badge">211 院校</div>
-        <div class="edu-school">南京师范大学</div>
-        <div class="edu-major">播音与主持艺术</div>
-        <div class="edu-period">2013.09 – 2017.06</div>
+        <div class="edu-school" contenteditable="false">南京师范大学</div>
+        <div class="edu-major" contenteditable="false">播音与主持艺术</div>
+        <div class="edu-period" contenteditable="false">2013.09 – 2017.06</div>
       </div>
     </div>
 
@@ -394,15 +476,15 @@
       <!-- 小红书 -->
       <div class="job">
         <div class="job-header">
-          <div class="job-company">小红书</div>
+          <div class="job-company" contenteditable="false">小红书</div>
           <div class="job-period">2025.03 — 至今</div>
         </div>
-        <div class="job-role">商业化 · 汽车行业品牌营销</div>
-        <div class="job-summary">为特斯拉、小米、鸿蒙智行、智己等头部车企提供全周期营销解决方案，覆盖车型定位、人群洞察、策略制定、投放运营与线索转化。</div>
+        <div class="job-role" contenteditable="false">商业化 · 汽车行业品牌营销</div>
+        <div class="job-summary" contenteditable="false">为特斯拉、小米、鸿蒙智行、智己等头部车企提供全周期营销解决方案，覆盖车型定位、人群洞察、策略制定、投放运营与线索转化。</div>
         <ul class="job-bullets">
-          <li><span class="highlight">用户洞察 & 市场分析</span>：梳理汽车行业交易周期、交易路径与卖点偏好，输出竞品分析报告与平台趋势洞察，支撑品牌在车型定位、品牌生态及口碑运营各板块差异化策略制定。</li>
-          <li><span class="highlight">品牌 & 产品营销策略</span>：主导 SU7、YU7、LS6、9X 等多款新品车型上市的平台定位及全生命周期营销打法，结合热点洞察输出大事件营销创意，实现声量、口碑与线索转化闭环。</li>
-          <li><span class="highlight">峰会对谈 & 行业影响力</span>：多次统筹品牌 T2T 高层对谈，主导行业营销方法论专项与峰会策划，牵头输出行业通案、白皮书并在官方号发布，强化平台在汽车行业的专业影响力与标准制定能力。</li>
+          <li contenteditable="false"><span class="highlight">用户洞察 & 市场分析</span>：梳理汽车行业交易周期、交易路径与卖点偏好，输出竞品分析报告与平台趋势洞察，支撑品牌在车型定位、品牌生态及口碑运营各板块差异化策略制定。</li>
+          <li contenteditable="false"><span class="highlight">品牌 & 产品营销策略</span>：主导 SU7、YU7、LS6、9X 等多款新品车型上市的平台定位及全生命周期营销打法，结合热点洞察输出大事件营销创意，实现声量、口碑与线索转化闭环。</li>
+          <li contenteditable="false"><span class="highlight">峰会对谈 & 行业影响力</span>：多次统筹品牌 T2T 高层对谈，主导行业营销方法论专项与峰会策划，牵头输出行业通案、白皮书并在官方号发布，强化平台在汽车行业的专业影响力与标准制定能力。</li>
         </ul>
       </div>
 
@@ -414,8 +496,8 @@
         </div>
         <div class="job-role">社媒传播 & 矩阵运营</div>
         <ul class="job-bullets">
-          <li><span class="highlight">新媒体矩阵运营</span>：统筹全国各区域新媒体运营策略，搭建高效 KOS 矩阵，深度耕耘内容生态，推进主播孵化与培训体系建设。</li>
-          <li><span class="highlight">社媒传播</span>：统筹品牌大事件及新门店开业、城市拓展等关键节点的区域传播策略，提升品牌知名度，实现精准覆盖与高效渗透。</li>
+          <li contenteditable="false"><span class="highlight">新媒体矩阵运营</span>：统筹全国各区域新媒体运营策略，搭建高效 KOS 矩阵，深度耕耘内容生态，推进主播孵化与培训体系建设。</li>
+          <li contenteditable="false"><span class="highlight">社媒传播</span>：统筹品牌大事件及新门店开业、城市拓展等关键节点的区域传播策略，提升品牌知名度，实现精准覆盖与高效渗透。</li>
         </ul>
       </div>
 
@@ -428,10 +510,10 @@
         <div class="job-role">社媒传播 & 用户运营</div>
         <div class="job-summary">负责车型传播、社媒运营与区域车主运营，深度参与产品策略落地与全域整合传播。入职半年荣获 <span class="highlight">「星耀飞行员」</span>，为非销售岗首位获评员工。</div>
         <ul class="job-bullets">
-          <li><span class="highlight">产品传播策略</span>：主导 Cybertruck 国内巡展、Model 3 焕新版、Model Y 改款等重点车型上市专项，制定社媒传播策略，深度操盘全系重点车型与品牌大事件直播。</li>
-          <li><span class="highlight">线上传播矩阵管理</span>：从 0 到 1 搭建并管理 <span class="highlight">400 人 60+ 门店</span>主播矩阵，建立培训、孵化、考核、激励机制；制定数据指标体系与监控看板，团队线上线索、订单、爆款内容<span class="highlight">连续多季度全国 TOP1</span>。</li>
-          <li><span class="highlight">Tesla Life 电商运营</span>：负责选品到变现全链路，多场次实现无投流高 GMV，超额 <span class="highlight">100%</span> 完成目标。</li>
-          <li><span class="highlight">车主运营</span>：策划车主活动、车主大会，主导异业品牌合作，拓展品牌影响力与新用户增长。</li>
+          <li contenteditable="false"><span class="highlight">产品传播策略</span>：主导 Cybertruck 国内巡展、Model 3 焕新版、Model Y 改款等重点车型上市专项，制定社媒传播策略，深度操盘全系重点车型与品牌大事件直播。</li>
+          <li contenteditable="false"><span class="highlight">线上传播矩阵管理</span>：从 0 到 1 搭建并管理 <span class="highlight">400 人 60+ 门店</span>主播矩阵，建立培训、孵化、考核、激励机制；制定数据指标体系与监控看板，团队线上线索、订单、爆款内容<span class="highlight">连续多季度全国 TOP1</span>。</li>
+          <li contenteditable="false"><span class="highlight">Tesla Life 电商运营</span>：负责选品到变现全链路，多场次实现无投流高 GMV，超额 <span class="highlight">100%</span> 完成目标。</li>
+          <li contenteditable="false"><span class="highlight">车主运营</span>：策划车主活动、车主大会，主导异业品牌合作，拓展品牌影响力与新用户增长。</li>
         </ul>
       </div>
 
@@ -443,9 +525,9 @@
         </div>
         <div class="job-role">数字 & 品牌生态营销</div>
         <ul class="job-bullets">
-          <li><span class="highlight">产品本地化营销</span>：深度洞察区域用户偏好与文化属性，推动本地赛事、商场活动、校园行及高校 UGC 创作，显著提升市场占有率。</li>
-          <li><span class="highlight">达人运营</span>：搭建达人、主播及校园渠道立体触达体系，建立内容生产与激励机制，实现低成本、规模化可复制增长。</li>
-          <li><span class="highlight">大事件营销</span>：联合苏绣、宋锦等非遗资源推出游戏皮肤，成功登上社媒热搜，实现年度商业化销售 <span class="highlight">TOP1</span>，获官媒报道。</li>
+          <li contenteditable="false"><span class="highlight">产品本地化营销</span>：深度洞察区域用户偏好与文化属性，推动本地赛事、商场活动、校园行及高校 UGC 创作，显著提升市场占有率。</li>
+          <li contenteditable="false"><span class="highlight">达人运营</span>：搭建达人、主播及校园渠道立体触达体系，建立内容生产与激励机制，实现低成本、规模化可复制增长。</li>
+          <li contenteditable="false"><span class="highlight">大事件营销</span>：联合苏绣、宋锦等非遗资源推出游戏皮肤，成功登上社媒热搜，实现年度商业化销售 <span class="highlight">TOP1</span>，获官媒报道。</li>
         </ul>
       </div>
 
@@ -457,9 +539,9 @@
         </div>
         <div class="job-role">管培生（市场研究 / 品牌策略 / 商业体运营）</div>
         <ul class="job-bullets">
-          <li>协助高管开展产业地产项目可行性分析、市场定位与产业规划，输出对外合作白皮书。</li>
-          <li>参与商业综合体项目筹备至运营全流程，覆盖市场分析、招商入驻与品牌推广。</li>
-          <li>主导新零售项目从概念到落地全链路，具备前期策划到终端执行的完整能力。</li>
+          <li contenteditable="false">协助高管开展产业地产项目可行性分析、市场定位与产业规划，输出对外合作白皮书。</li>
+          <li contenteditable="false">参与商业综合体项目筹备至运营全流程，覆盖市场分析、招商入驻与品牌推广。</li>
+          <li contenteditable="false">主导新零售项目从概念到落地全链路，具备前期策划到终端执行的完整能力。</li>
         </ul>
       </div>
 
@@ -469,14 +551,60 @@
     <section class="section">
       <div class="section-title">其他经历</div>
       <div class="misc-list">
-        <div class="misc-item"><span class="misc-label">淘宝代理商：</span>负责母婴、快消赛道品牌客户招商合作及大事件活动执行，独立承接 3–4 个客户全年合作方案落地。</div>
-        <div class="misc-item"><span class="misc-label">省电视台实习记者：</span>策划个人原创栏目，聚焦地产品牌本地项目合作，独立负责商业投放合作。</div>
-        <div class="misc-item"><span class="misc-label">美食类自媒体：</span>负责公众号达人内容创作、商家合作及图文视频拍摄，具备内容生产到商业变现全流程经验。</div>
+        <div class="misc-item" contenteditable="false"><span class="misc-label">淘宝代理商：</span>负责母婴、快消赛道品牌客户招商合作及大事件活动执行，独立承接 3–4 个客户全年合作方案落地。</div>
+        <div class="misc-item" contenteditable="false"><span class="misc-label">省电视台实习记者：</span>策划个人原创栏目，聚焦地产品牌本地项目合作，独立负责商业投放合作。</div>
+        <div class="misc-item" contenteditable="false"><span class="misc-label">美食类自媒体：</span>负责公众号达人内容创作、商家合作及图文视频拍摄，具备内容生产到商业变现全流程经验。</div>
       </div>
     </section>
 
   </main>
 </div>
+
+<script>
+// 头像上传
+const avatarInput = document.getElementById('avatar-input');
+avatarInput.addEventListener('change', function() {
+  const file = this.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const avatarEl = document.getElementById('avatarEl');
+    document.getElementById('avatarText').style.display = 'none';
+    // 移除旧图片
+    const oldImg = avatarEl.querySelector('img');
+    if (oldImg) oldImg.remove();
+    const img = document.createElement('img');
+    img.src = e.target.result;
+    avatarEl.insertBefore(img, avatarEl.querySelector('.avatar-hint'));
+    // 存到 localStorage 下次访问还在
+    localStorage.setItem('resume_avatar', e.target.result);
+  };
+  reader.readAsDataURL(file);
+});
+
+// 恢复头像
+const savedAvatar = localStorage.getItem('resume_avatar');
+if (savedAvatar) {
+  const avatarEl = document.getElementById('avatarEl');
+  document.getElementById('avatarText').style.display = 'none';
+  const img = document.createElement('img');
+  img.src = savedAvatar;
+  avatarEl.insertBefore(img, avatarEl.querySelector('.avatar-hint'));
+}
+
+// 编辑模式切换
+function toggleEdit() {
+  const body = document.body;
+  const btn = document.getElementById('editToggle');
+  const isEditing = body.classList.toggle('editing');
+  // 切换所有 contenteditable
+  document.querySelectorAll('[contenteditable]').forEach(el => {
+    el.contentEditable = isEditing ? 'true' : 'false';
+  });
+  btn.textContent = isEditing ? '✅ 完成编辑' : '✏️ 编辑文字';
+  btn.classList.toggle('active', isEditing);
+}
+</script>
 
 </body>
 </html>
