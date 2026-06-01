@@ -5,604 +5,580 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>袁梦 · 简历</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
     :root {
-      --ink: #0f172a;
-      --ink-2: #334155;
-      --ink-3: #64748b;
-      --ink-4: #94a3b8;
       --blue: #2563eb;
       --blue-light: #eff6ff;
       --blue-mid: #bfdbfe;
+      --ink: #0f172a;
+      --ink-2: #1e293b;
+      --ink-3: #475569;
+      --ink-4: #94a3b8;
       --border: #e2e8f0;
-      --bg: #f8fafc;
-      --white: #ffffff;
-      --tag-bg: #f1f5f9;
+      --bg: #f1f5f9;
+      --sidebar-bg: #0f172a;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'MiSans', 'PingFang SC', 'Inter', -apple-system, sans-serif;
+      font-family: 'MiSans', 'PingFang SC', -apple-system, 'Helvetica Neue', sans-serif;
       background: var(--bg);
       color: var(--ink);
-      line-height: 1.6;
+      line-height: 1.65;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
-    }
-
-    /* ── 打印/PDF ── */
-    @media print {
-      body { background: white; }
-      .download-btn { display: none !important; }
-      .page { box-shadow: none; margin: 0; border-radius: 0; max-width: 100%; }
-      .sidebar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     }
 
     /* ── 工具栏 ── */
     .toolbar {
       position: fixed;
-      bottom: 32px;
-      right: 32px;
+      bottom: 28px;
+      right: 28px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
       z-index: 999;
     }
-    .download-btn, .edit-btn {
+    @media print { .toolbar { display: none !important; } }
+
+    .toolbar button {
       border: none;
-      border-radius: 12px;
-      padding: 12px 22px;
-      font-size: 14px;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
-      transition: transform 0.15s, box-shadow 0.15s;
+      gap: 7px;
       font-family: inherit;
+      transition: transform 0.15s, box-shadow 0.15s;
     }
-    .download-btn {
+    .btn-pdf {
       background: var(--blue);
       color: white;
-      box-shadow: 0 4px 20px rgba(37,99,235,0.35);
+      box-shadow: 0 4px 16px rgba(37,99,235,0.35);
     }
-    .download-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,99,235,0.4); }
-    .edit-btn {
+    .btn-pdf:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,99,235,0.4); }
+    .btn-edit {
       background: white;
       color: var(--ink-2);
-      box-shadow: 0 4px 16px rgba(15,23,42,0.1);
+      box-shadow: 0 2px 12px rgba(15,23,42,0.1);
       border: 1px solid var(--border);
     }
-    .edit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(15,23,42,0.12); }
-    .edit-btn.active { background: #fef9c3; color: #92400e; border-color: #fde68a; }
+    .btn-edit:hover { transform: translateY(-2px); }
+    .btn-edit.on { background: #fef9c3; color: #92400e; border-color: #fcd34d; }
 
-    /* 编辑模式提示 */
-    .edit-hint {
-      display: none;
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #1e40af;
-      color: white;
-      font-size: 13px;
-      font-weight: 500;
-      padding: 9px 20px;
-      border-radius: 20px;
-      box-shadow: 0 4px 16px rgba(30,64,175,0.3);
-      z-index: 1000;
-      white-space: nowrap;
-    }
-    body.editing .edit-hint { display: block; }
-
-    /* 编辑模式下可编辑元素高亮 */
+    /* 编辑模式高亮 */
     body.editing [contenteditable]:hover {
       outline: 1.5px dashed #60a5fa;
-      border-radius: 3px;
-      background: rgba(239,246,255,0.6);
+      border-radius: 2px;
+      background: rgba(239,246,255,0.5);
       cursor: text;
     }
     body.editing [contenteditable]:focus {
       outline: 2px solid #2563eb;
-      border-radius: 3px;
+      border-radius: 2px;
       background: #eff6ff;
     }
-
-    /* ── 页面容器 ── */
-    .page {
-      max-width: 900px;
-      margin: 32px auto;
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 4px 40px rgba(15,23,42,0.08);
-      overflow: hidden;
-      display: grid;
-      grid-template-columns: 260px 1fr;
-    }
-
-    /* ══════════════════════════════
-       左栏 Sidebar
-    ══════════════════════════════ */
-    .sidebar {
-      background: #0f172a;
+    .edit-tip {
+      display: none;
+      position: fixed;
+      top: 18px; left: 50%;
+      transform: translateX(-50%);
+      background: #1d4ed8;
       color: white;
-      padding: 40px 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
+      font-size: 12.5px;
+      font-weight: 500;
+      padding: 8px 20px;
+      border-radius: 20px;
+      box-shadow: 0 4px 16px rgba(29,78,216,0.3);
+      z-index: 1000;
+      white-space: nowrap;
+    }
+    body.editing .edit-tip { display: block; }
+
+    /* ── 页面 ── */
+    .page {
+      width: 794px;
+      margin: 28px auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 32px rgba(15,23,42,0.09);
+      overflow: hidden;
+      page-break-after: always;
+    }
+    .page:last-child { page-break-after: auto; margin-bottom: 28px; }
+
+    @media print {
+      body { background: white; }
+      .page {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+        page-break-after: always;
+      }
     }
 
-    /* 头像区域 */
-    .avatar-area {
+    /* ── 顶部 Header（第一页） ── */
+    .header {
+      background: var(--sidebar-bg);
+      padding: 36px 48px 28px;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 14px;
+      gap: 28px;
+    }
+    .avatar-wrap {
+      flex-shrink: 0;
+      position: relative;
     }
     .avatar {
-      width: 88px; height: 88px;
+      width: 80px; height: 80px;
       border-radius: 50%;
       background: linear-gradient(135deg, #2563eb, #60a5fa);
+      border: 3px solid rgba(255,255,255,0.18);
       display: flex; align-items: center; justify-content: center;
-      font-size: 22px; font-weight: 700; color: white;
-      flex-shrink: 0;
-      letter-spacing: 2px;
+      font-size: 20px; font-weight: 700; color: white;
       cursor: pointer;
-      position: relative;
       overflow: hidden;
-      border: 3px solid rgba(255,255,255,0.15);
+      position: relative;
       transition: opacity 0.2s;
     }
-    .avatar:hover { opacity: 0.85; }
-    .avatar img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-    }
-    .avatar-hint {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.45);
-      color: white;
-      font-size: 11px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      opacity: 0;
-      transition: opacity 0.2s;
-      letter-spacing: 0;
-      font-weight: 500;
-    }
-    .avatar:hover .avatar-hint { opacity: 1; }
-    .name { font-size: 22px; font-weight: 700; letter-spacing: 2px; text-align: center; }
-    .tagline {
-      font-size: 11px;
-      color: #93c5fd;
-      letter-spacing: 0.15em;
-      text-align: center;
-      text-transform: uppercase;
-    }
-
-    /* 联系方式 */
-    .contact-list { display: flex; flex-direction: column; gap: 10px; }
-    .contact-item {
-      display: flex; align-items: center; gap: 10px;
-      font-size: 12.5px; color: #cbd5e1;
-    }
-    .contact-icon {
-      width: 28px; height: 28px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 6px;
+    .avatar:hover { opacity: 0.88; }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .avatar-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.4);
+      color: white; font-size: 11px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 13px;
-      flex-shrink: 0;
+      border-radius: 50%;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .avatar:hover .avatar-overlay { opacity: 1; }
+    input#avatarInput { display: none; }
+
+    .header-info { flex: 1; }
+    .header-name {
+      font-size: 26px; font-weight: 700;
+      color: white; letter-spacing: 3px;
+      margin-bottom: 6px;
+    }
+    .header-contact {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .header-contact span {
+      font-size: 13px; color: #94a3b8;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .header-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+    .header-tag {
+      background: rgba(37,99,235,0.25);
+      border: 1px solid rgba(96,165,250,0.3);
+      border-radius: 5px;
+      padding: 2px 10px;
+      font-size: 11.5px;
+      color: #93c5fd;
     }
 
-    /* 侧边 section 标题 */
-    .sidebar-section-title {
-      font-size: 10px;
+    /* ── 两栏 body ── */
+    .body-wrap {
+      display: grid;
+      grid-template-columns: 210px 1fr;
+      min-height: 0;
+    }
+
+    /* ── 左栏 ── */
+    .sidebar {
+      background: #0f172a;
+      padding: 28px 22px 32px;
+      color: white;
+    }
+    .sb-section { margin-bottom: 26px; }
+    .sb-section:last-child { margin-bottom: 0; }
+    .sb-title {
+      font-size: 9.5px;
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: #60a5fa;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 6px;
     }
-    .sidebar-section-title::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: rgba(255,255,255,0.08);
-    }
-
-    /* 技能标签 */
-    .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-    .skill-tag {
+    .sb-title::after {
+      content: ''; flex: 1; height: 1px;
       background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 6px;
-      padding: 4px 10px;
-      font-size: 11.5px;
-      color: #e2e8f0;
     }
 
     /* 教育 */
-    .edu-block {}
-    .edu-school { font-size: 13px; font-weight: 600; color: white; margin-bottom: 3px; }
-    .edu-major { font-size: 12px; color: #93c5fd; margin-bottom: 4px; }
-    .edu-period { font-size: 11px; color: #64748b; }
+    .edu-school { font-size: 12.5px; font-weight: 600; color: white; margin-bottom: 3px; }
     .edu-badge {
       display: inline-block;
-      background: rgba(37,99,235,0.3);
-      border: 1px solid rgba(96,165,250,0.3);
+      background: rgba(37,99,235,0.25);
+      border: 1px solid rgba(96,165,250,0.25);
       border-radius: 4px;
       padding: 1px 7px;
-      font-size: 10px;
-      color: #93c5fd;
-      margin-bottom: 6px;
+      font-size: 10px; color: #93c5fd;
+      margin-bottom: 5px;
+    }
+    .edu-major { font-size: 11.5px; color: #cbd5e1; margin-bottom: 2px; }
+    .edu-courses { font-size: 10.5px; color: #64748b; line-height: 1.5; }
+    .edu-period { font-size: 10.5px; color: #475569; margin-top: 3px; }
+
+    /* 技能标签 */
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .skill-tag {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 5px;
+      padding: 3px 9px;
+      font-size: 11px; color: #e2e8f0;
     }
 
-    /* ══════════════════════════════
-       右栏 Main
-    ══════════════════════════════ */
-    .main {
-      padding: 40px 40px 48px;
-      display: flex;
-      flex-direction: column;
-      gap: 36px;
-    }
+    /* ── 右栏 ── */
+    .main { padding: 28px 36px 32px; }
 
-    /* Section */
-    .section {}
-    .section-title {
-      font-size: 11px;
+    /* Section 标题 */
+    .sec-title {
+      font-size: 9.5px;
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--blue);
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      margin-bottom: 18px;
+      display: flex; align-items: center; gap: 8px;
     }
-    .section-title::after {
-      content: '';
-      flex: 1;
-      height: 1.5px;
-      background: var(--blue-mid);
-      border-radius: 1px;
+    .sec-title::after {
+      content: ''; flex: 1; height: 1.5px;
+      background: var(--blue-mid); border-radius: 1px;
     }
 
-    /* 工作经历卡片 */
-    .job {
-      position: relative;
-      padding-left: 20px;
-      margin-bottom: 28px;
-    }
+    /* 工作经历条目 */
+    .job { margin-bottom: 22px; padding-left: 16px; position: relative; }
     .job:last-child { margin-bottom: 0; }
     .job::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 6px;
-      width: 8px; height: 8px;
+      content: ''; position: absolute;
+      left: 0; top: 5px;
+      width: 7px; height: 7px;
       border-radius: 50%;
       background: var(--blue);
-      border: 2px solid var(--blue-mid);
+      border: 2px solid #bfdbfe;
     }
     .job::after {
-      content: '';
-      position: absolute;
-      left: 3.5px; top: 18px; bottom: -20px;
-      width: 1px;
-      background: var(--border);
+      content: ''; position: absolute;
+      left: 3px; top: 15px; bottom: -14px;
+      width: 1px; background: var(--border);
     }
     .job:last-child::after { display: none; }
 
-    .job-header {
+    .job-head {
       display: flex;
-      align-items: flex-start;
+      align-items: baseline;
       justify-content: space-between;
-      margin-bottom: 3px;
-      gap: 12px;
+      gap: 10px;
+      margin-bottom: 1px;
     }
-    .job-company {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--ink);
+    .job-co {
+      font-size: 13.5px; font-weight: 700; color: var(--ink);
     }
     .job-period {
-      font-size: 11.5px;
-      color: var(--ink-4);
-      white-space: nowrap;
-      flex-shrink: 0;
-      background: var(--tag-bg);
-      border-radius: 5px;
-      padding: 2px 8px;
+      font-size: 11px; color: var(--ink-4);
+      background: #f1f5f9; border-radius: 4px;
+      padding: 1px 7px; white-space: nowrap; flex-shrink: 0;
     }
     .job-role {
-      font-size: 12.5px;
-      color: var(--blue);
-      font-weight: 500;
-      margin-bottom: 10px;
+      font-size: 11.5px; color: var(--blue);
+      font-weight: 500; margin-bottom: 6px;
     }
     .job-summary {
-      font-size: 12.5px;
-      color: var(--ink-3);
-      margin-bottom: 10px;
-      line-height: 1.65;
+      font-size: 11.5px; color: var(--ink-3);
+      margin-bottom: 7px; line-height: 1.65;
     }
-    .job-bullets { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .job-bullets { list-style: none; display: flex; flex-direction: column; gap: 5px; }
     .job-bullets li {
-      font-size: 12.5px;
-      color: var(--ink-2);
-      line-height: 1.65;
-      padding-left: 14px;
-      position: relative;
+      font-size: 11.5px; color: var(--ink-2);
+      line-height: 1.65; padding-left: 12px; position: relative;
     }
     .job-bullets li::before {
-      content: '·';
-      position: absolute;
-      left: 0;
-      color: var(--blue);
-      font-weight: 700;
-      font-size: 16px;
-      line-height: 1.4;
-    }
-
-    /* 亮点 highlight */
-    .highlight {
-      display: inline;
-      background: var(--blue-light);
-      color: var(--blue);
-      font-weight: 600;
-      border-radius: 3px;
-      padding: 0 3px;
+      content: '—'; position: absolute; left: 0;
+      color: var(--blue); font-size: 11px;
     }
 
     /* 其他经历 */
-    .misc-list { display: flex; flex-direction: column; gap: 10px; }
     .misc-item {
-      font-size: 12.5px;
-      color: var(--ink-2);
-      padding-left: 14px;
-      position: relative;
-      line-height: 1.6;
+      font-size: 11.5px; color: var(--ink-2);
+      line-height: 1.65; margin-bottom: 6px;
+      padding-left: 12px; position: relative;
     }
     .misc-item::before {
-      content: '·';
-      position: absolute;
-      left: 0;
-      color: var(--ink-4);
-      font-size: 16px;
-      line-height: 1.4;
+      content: '—'; position: absolute; left: 0;
+      color: var(--ink-4); font-size: 11px;
     }
-    .misc-label {
-      font-weight: 600;
-      color: var(--ink);
+    .misc-item:last-child { margin-bottom: 0; }
+    .misc-label { font-weight: 600; color: var(--ink); }
+
+    /* 技能区域（右栏） */
+    .skill-block { margin-bottom: 10px; }
+    .skill-block-label {
+      font-size: 11.5px; font-weight: 600;
+      color: var(--ink); margin-bottom: 3px;
+    }
+    .skill-block p {
+      font-size: 11.5px; color: var(--ink-3); line-height: 1.65;
     }
 
+    /* 第二页 header bar */
+    .page2-header {
+      background: var(--sidebar-bg);
+      padding: 14px 48px;
+      display: flex; align-items: center;
+      justify-content: space-between;
+    }
+    .page2-name {
+      font-size: 14px; font-weight: 700;
+      color: white; letter-spacing: 2px;
+    }
+    .page2-label {
+      font-size: 11px; color: #60a5fa;
+    }
   </style>
 </head>
 <body>
 
-<div class="edit-hint">✏️ 编辑模式已开启，点击任意文字直接修改 · 再次点击「编辑」退出</div>
-<input type="file" id="avatar-input" accept="image/*" style="display:none">
+<div class="edit-tip">✏️ 编辑模式已开启，点击任意文字即可修改 · 再次点击「编辑」退出</div>
+<input type="file" id="avatarInput" accept="image/*">
 
 <div class="toolbar">
-  <button class="edit-btn" id="editToggle" onclick="toggleEdit()">✏️ 编辑文字</button>
-  <button class="download-btn" onclick="window.print()">⬇ 下载 PDF</button>
+  <button class="btn-edit" id="editBtn" onclick="toggleEdit()">✏️ 编辑文字</button>
+  <button class="btn-pdf" onclick="window.print()">⬇ 下载 PDF</button>
 </div>
 
+<!-- ══════════ 第一页 ══════════ -->
 <div class="page">
 
-  <!-- ══ 左栏 ══ -->
-  <aside class="sidebar">
-
-    <div class="avatar-area">
-      <div class="avatar" id="avatarEl" onclick="document.getElementById('avatar-input').click()">
+  <!-- 顶部 Header -->
+  <div class="header">
+    <div class="avatar-wrap">
+      <div class="avatar" id="avatarEl" onclick="document.getElementById('avatarInput').click()">
         <span id="avatarText">袁梦</span>
-        <div class="avatar-hint">更换头像</div>
-      </div>
-      <div class="name" contenteditable="false">袁 梦</div>
-      <div class="tagline" contenteditable="false">Brand Marketing · Operations</div>
-    </div>
-
-    <div>
-      <div class="sidebar-section-title">联系方式</div>
-      <div class="contact-list">
-        <div class="contact-item">
-          <div class="contact-icon">📱</div>
-          <span contenteditable="false">17316500306</span>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">✉️</div>
-          <span contenteditable="false">2429142813@qq.com</span>
-        </div>
+        <div class="avatar-overlay">更换头像</div>
       </div>
     </div>
+    <div class="header-info">
+      <div class="header-name" contenteditable="false">袁梦</div>
+      <div class="header-contact">
+        <span>📱 <span contenteditable="false">17316500306</span></span>
+        <span>✉️ <span contenteditable="false">2429142813@qq.com</span></span>
+      </div>
+      <div class="header-tags">
+        <span class="header-tag" contenteditable="false">品牌营销</span>
+        <span class="header-tag" contenteditable="false">社媒传播</span>
+        <span class="header-tag" contenteditable="false">用户运营</span>
+        <span class="header-tag" contenteditable="false">汽车行业</span>
+      </div>
+    </div>
+  </div>
 
-    <div>
-      <div class="sidebar-section-title">教育背景</div>
-      <div class="edu-block">
+  <!-- 两栏 -->
+  <div class="body-wrap">
+
+    <!-- 左栏 -->
+    <aside class="sidebar">
+
+      <div class="sb-section">
+        <div class="sb-title">教育经历</div>
         <div class="edu-badge" contenteditable="false">211 院校</div>
         <div class="edu-school" contenteditable="false">南京师范大学</div>
         <div class="edu-major" contenteditable="false">播音与主持艺术</div>
+        <div class="edu-courses" contenteditable="false">主修课程：播音主持、新闻学、传播学、用户心理学、广告营销等</div>
         <div class="edu-period" contenteditable="false">2013.09 – 2017.06</div>
       </div>
-    </div>
 
-    <div>
-      <div class="sidebar-section-title">核心技能</div>
-      <div class="skill-tags">
-        <span class="skill-tag" contenteditable="false">品牌营销策略</span>
-        <span class="skill-tag" contenteditable="false">用户洞察</span>
-        <span class="skill-tag" contenteditable="false">种草种收一体</span>
-        <span class="skill-tag" contenteditable="false">IP 营销</span>
-        <span class="skill-tag" contenteditable="false">KOL/KOS 运营</span>
-        <span class="skill-tag" contenteditable="false">数据分析</span>
-        <span class="skill-tag" contenteditable="false">直播运营</span>
-        <span class="skill-tag" contenteditable="false">高管对谈</span>
-        <span class="skill-tag" contenteditable="false">PPT 制作</span>
-        <span class="skill-tag" contenteditable="false">AI Agent</span>
-        <span class="skill-tag" contenteditable="false">项目管理</span>
-        <span class="skill-tag" contenteditable="false">白皮书撰写</span>
+      <div class="sb-section">
+        <div class="sb-title">核心技能</div>
+        <div class="skill-tags">
+          <span class="skill-tag" contenteditable="false">品牌营销策略</span>
+          <span class="skill-tag" contenteditable="false">用户洞察</span>
+          <span class="skill-tag" contenteditable="false">种草种收一体</span>
+          <span class="skill-tag" contenteditable="false">IP 营销</span>
+          <span class="skill-tag" contenteditable="false">KOL/KOS 运营</span>
+          <span class="skill-tag" contenteditable="false">数据分析</span>
+          <span class="skill-tag" contenteditable="false">直播运营</span>
+          <span class="skill-tag" contenteditable="false">高管对谈</span>
+          <span class="skill-tag" contenteditable="false">PPT 制作</span>
+          <span class="skill-tag" contenteditable="false">AI Agent</span>
+          <span class="skill-tag" contenteditable="false">项目管理</span>
+          <span class="skill-tag" contenteditable="false">白皮书撰写</span>
+        </div>
       </div>
-    </div>
 
-    <div>
-      <div class="sidebar-section-title">行业经验</div>
-      <div class="skill-tags">
-        <span class="skill-tag" contenteditable="false">🚗 汽车</span>
-        <span class="skill-tag" contenteditable="false">📱 3C 数码</span>
-        <span class="skill-tag" contenteditable="false">🎮 游戏</span>
-        <span class="skill-tag" contenteditable="false">🏢 商业地产</span>
+      <div class="sb-section">
+        <div class="sb-title">行业经验</div>
+        <div class="skill-tags">
+          <span class="skill-tag" contenteditable="false">🚗 汽车</span>
+          <span class="skill-tag" contenteditable="false">📱 3C 数码</span>
+          <span class="skill-tag" contenteditable="false">🎮 游戏</span>
+          <span class="skill-tag" contenteditable="false">🏢 商业地产</span>
+        </div>
       </div>
-    </div>
 
-  </aside>
+    </aside>
 
-  <!-- ══ 右栏 ══ -->
-  <main class="main">
-
-    <!-- 工作经历 -->
-    <section class="section">
-      <div class="section-title">工作经历</div>
+    <!-- 右栏 -->
+    <main class="main">
+      <div class="sec-title">工作经历</div>
 
       <!-- 小红书 -->
       <div class="job">
-        <div class="job-header">
-          <div class="job-company" contenteditable="false">小红书</div>
+        <div class="job-head">
+          <div class="job-co" contenteditable="false">小红书</div>
           <div class="job-period" contenteditable="false">2025.03 — 至今</div>
         </div>
-        <div class="job-role" contenteditable="false">商业化 · 汽车行业品牌营销</div>
-        <div class="job-summary" contenteditable="false">为特斯拉、小米、鸿蒙智行、智己等头部车企提供全周期营销解决方案，覆盖车型定位、人群洞察、策略制定、投放运营与线索转化。</div>
+        <div class="job-role" contenteditable="false">商业化汽车行业品牌营销</div>
+        <div class="job-summary" contenteditable="false">为特斯拉、小米、鸿蒙智行、智己等交通出行行业品牌提供产品全周期营销解决方案，深度参与车型市场定位、目标人群人群洞察、营销策略、投放运营与线索转化等。</div>
         <ul class="job-bullets">
-          <li contenteditable="false"><span class="highlight">用户洞察 & 市场分析</span>：梳理汽车行业交易周期、交易路径与卖点偏好，输出竞品分析报告与平台趋势洞察，支撑品牌在车型定位、品牌生态及口碑运营各板块差异化策略制定。</li>
-          <li contenteditable="false"><span class="highlight">品牌 & 产品营销策略</span>：主导 SU7、YU7、LS6、9X 等多款新品车型上市的平台定位及全生命周期营销打法，结合热点洞察输出大事件营销创意，实现声量、口碑与线索转化闭环。</li>
-          <li contenteditable="false"><span class="highlight">峰会对谈 & 行业影响力</span>：多次统筹品牌 T2T 高层对谈，主导行业营销方法论专项与峰会策划，牵头输出行业通案、白皮书并在官方号发布，强化平台在汽车行业的专业影响力与标准制定能力。</li>
+          <li contenteditable="false"><strong>用户洞察与市场分析：</strong>梳理汽车行业用户数据（交易周期、交易路径、卖点及交易偏好等），制定品牌营销策略、产品定位及投放打法，形成竞品分析报告与平台趋势洞察，支撑所负责品牌在车型定位、品牌生态、车主及口碑运营各板块的差异化竞争策略制定；</li>
+          <li contenteditable="false"><strong>品牌及产品营销策略：</strong>基于市场竞争格局、用户洞察、产品定位等策略，制定车型全生命周期营销打法及投放策略，主导多款新品车型上市平台定位及营销策略（包括不限于SU7、YU7、LS6、9X等），深度参与负责品牌及车型全生命周期的营销动作，并结合平台趋势与热点洞察，输出大事件营销创意。实现品牌、产品声量、口碑与线索转化闭环。</li>
+          <li contenteditable="false"><strong>峰会对谈：</strong>多次负责品牌T2T高层对谈，统筹材料包装、议题设计与高层对接；行业某营销方法论专项PM及行业峰会策划团队成员，牵头输出通案、行业白皮书等材料，并在官方号对外发布，强化平台在汽车行业的专业影响力与标准制定能力。</li>
         </ul>
       </div>
 
       <!-- 极越 -->
       <div class="job">
-        <div class="job-header">
-          <div class="job-company" contenteditable="false">极越汽车</div>
+        <div class="job-head">
+          <div class="job-co" contenteditable="false">极越汽车</div>
           <div class="job-period" contenteditable="false">2024.06 — 2025.01</div>
         </div>
-        <div class="job-role">社媒传播 & 矩阵运营</div>
+        <div class="job-role" contenteditable="false">社媒传播与矩阵运营</div>
         <ul class="job-bullets">
-          <li contenteditable="false"><span class="highlight">新媒体矩阵运营</span>：统筹全国各区域新媒体运营策略，搭建高效 KOS 矩阵，深度耕耘内容生态，推进主播孵化与培训体系建设。</li>
-          <li contenteditable="false"><span class="highlight">社媒传播</span>：统筹品牌大事件及新门店开业、城市拓展等关键节点的区域传播策略，提升品牌知名度，实现精准覆盖与高效渗透。</li>
+          <li contenteditable="false"><strong>新媒体矩阵运营：</strong>全面负责全国各区域新媒体运营策略的制定与执行，搭建高效的KOS矩阵，深度耕耘内容生态，同时积极推进主播的孵化与培训工作。</li>
+          <li contenteditable="false"><strong>社媒传播：</strong>统筹品牌大事件在各区域的传播布局，以及区域新门店开业、城市拓展等关键节点的传播策略制定与执行，有效提升品牌在不同区域的知名度与影响力，实现品牌传播的精准覆盖与高效渗透。</li>
         </ul>
       </div>
 
       <!-- 特斯拉 -->
       <div class="job">
-        <div class="job-header">
-          <div class="job-company" contenteditable="false">特斯拉</div>
+        <div class="job-head">
+          <div class="job-co" contenteditable="false">特斯拉</div>
           <div class="job-period" contenteditable="false">2023.01 — 2024.05</div>
         </div>
-        <div class="job-role">社媒传播 & 用户运营</div>
-        <div class="job-summary">负责车型传播、社媒运营与区域车主运营，深度参与产品策略落地与全域整合传播。入职半年荣获 <span class="highlight">「星耀飞行员」</span>，为非销售岗首位获评员工。</div>
+        <div class="job-role" contenteditable="false">社媒传播与用户运营</div>
+        <div class="job-summary" contenteditable="false">负责车型传播、社媒运营、区域车主用户运营，深度参与产品策略落地与全域整合传播。以传播数据反哺产品口碑与用户运营，成为公司非销售岗首位入职半年获评"星耀飞行员"员工。</div>
         <ul class="job-bullets">
-          <li contenteditable="false"><span class="highlight">产品传播策略</span>：主导 Cybertruck 国内巡展、Model 3 焕新版、Model Y 改款等重点车型上市专项，制定社媒传播策略，深度操盘全系重点车型与品牌大事件直播。</li>
-          <li contenteditable="false"><span class="highlight">线上传播矩阵管理</span>：从 0 到 1 搭建并管理 <span class="highlight">400 人 60+ 门店</span>主播矩阵，建立培训、孵化、考核、激励机制；制定数据指标体系与监控看板，团队线上线索、订单、爆款内容<span class="highlight">连续多季度全国 TOP1</span>。</li>
-          <li contenteditable="false"><span class="highlight">Tesla Life 电商运营</span>：负责选品到变现全链路，多场次实现无投流高 GMV，超额 <span class="highlight">100%</span> 完成目标。</li>
-          <li contenteditable="false"><span class="highlight">车主运营</span>：策划车主活动、车主大会，主导异业品牌合作，拓展品牌影响力与新用户增长。</li>
+          <li contenteditable="false"><strong>产品传播策略：</strong>主导Cybertruck国内巡展、Model 3焕新版、Model Y改款等重点车型上市专项，制定产品社媒传播策略等。同时作为核心直播负责人，深度操盘全系重点车型与品牌大事件直播。支持配件类商品重点直播、金融置换直播、二手车直播等各条线直播大事件；</li>
+          <li contenteditable="false"><strong>线上传播矩阵管理：</strong>人员管理—从0到1搭建并管理400人60+门店主播矩阵，建立培训、孵化、考核、激励机制，实现主播团队标准化、规模化运作；内容管理—统筹短视频、直播、社媒内容策略，围绕核心车型上市、产品卖点、用户心智打造全周期传播方案；数据管理：制定线上数据指标体系，搭建数据监控看板，对数据进行全链路追踪与复盘优化。团队线上线索、订单、爆款内容连续多季度全国TOP1；</li>
+          <li contenteditable="false"><strong>车周边产品电商运营：</strong>作为Tesla Life项目核心人员，负责从选品到商业变现的全链路：直播设计、内容及物料制作、上播带货，多场次实现无投流高GMV；商务协作：对接代理商、售后与仓储，保障履约闭环；超额100%完成目标。</li>
+          <li contenteditable="false"><strong>车主运营与拓展管理：</strong>负责车主活动运营，策划并组织多样化活动，如车主活动、车主大会等，提升车主对品牌的归属感与忠诚度。同时，主导品牌外拓活动，与异业伙伴开展合作，通过联合举办活动、资源共享等方式，拓展品牌影响力、提升车主权益、同时开拓品牌新用户增长。</li>
         </ul>
       </div>
 
+    </main>
+  </div>
+</div>
+
+<!-- ══════════ 第二页 ══════════ -->
+<div class="page">
+
+  <div class="page2-header">
+    <div class="page2-name">袁梦</div>
+    <div class="page2-label">传播 · 营销 · 运营</div>
+  </div>
+
+  <div class="body-wrap">
+    <aside class="sidebar" style="padding-top:24px;">
+      <!-- 左栏留空或放补充信息 -->
+      <div class="sb-section">
+        <div class="sb-title">社会实践</div>
+        <div class="misc-item" contenteditable="false"><span class="misc-label">淘宝代理商</span><br>负责母婴、快消赛道部分品牌客户的招商合作及大事件活动执行，独立承接3–4个客户全年度合作方案落地。</div>
+        <div class="misc-item" contenteditable="false"><span class="misc-label">省电视台栏目实习记者</span><br>独立负责部分合作地产客户招商及商业投放合作，实习期间策划个人原创栏目，聚焦地产品牌本地项目合作。</div>
+        <div class="misc-item" contenteditable="false"><span class="misc-label">美食类自媒体创作</span><br>负责公众号达人的内容创作、商家合作及图文视频拍摄工作，具备从内容生产到商业变现的流程经验。</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="sec-title">工作经历（续）</div>
+
       <!-- 腾讯游戏 -->
       <div class="job">
-        <div class="job-header">
-          <div class="job-company" contenteditable="false">腾讯游戏</div>
+        <div class="job-head">
+          <div class="job-co" contenteditable="false">腾讯游戏</div>
           <div class="job-period" contenteditable="false">2021.05 — 2022.10</div>
         </div>
-        <div class="job-role">数字 & 品牌生态营销</div>
+        <div class="job-role" contenteditable="false">数字与品牌生态营销</div>
+        <div class="job-summary" contenteditable="false">负责腾讯游戏核心产品区域产品营销、用户增长、本地化策略、内容生态与跨界整合。</div>
         <ul class="job-bullets">
-          <li contenteditable="false"><span class="highlight">产品本地化营销</span>：深度洞察区域用户偏好与文化属性，推动本地赛事、商场活动、校园行及高校 UGC 创作，显著提升市场占有率。</li>
-          <li contenteditable="false"><span class="highlight">达人运营</span>：搭建达人、主播及校园渠道立体触达体系，建立内容生产与激励机制，实现低成本、规模化可复制增长。</li>
-          <li contenteditable="false"><span class="highlight">大事件营销</span>：联合苏绣、宋锦等非遗资源推出游戏皮肤，成功登上社媒热搜，实现年度商业化销售 <span class="highlight">TOP1</span>，获官媒报道。</li>
+          <li contenteditable="false"><strong>产品本地化营销：</strong>深度洞察区域用户偏好、消费习惯与文化属性，将产品卖点与用户需求精准匹配，反哺产品版本优化。同时推动本地赛事合作、商场活动、校园行以及高校UGC创作活动等，显著提升产品在区域市场的用户粘性与市场占有率。</li>
+          <li contenteditable="false"><strong>达人运营：</strong>搭建并运营涵盖达人、主播及校园渠道的立体化用户触达体系，建立完善的内容生产、培训、考核及激励机制，实现低成本、规模化且可复制的用户增长模式。通过精细化运营，激发各渠道用户的创作热情与传播动力，有效扩大产品用户规模，提升产品的市场影响力与传播效率。</li>
+          <li contenteditable="false"><strong>内容与大事件营销：</strong>围绕产品新版本、新英雄、新皮肤等核心卖点，策划并实施大事件传播策略。创新跨界合作模式，实现产品破圈与心智占领。任职期间，牵头区域非遗文化资源（苏绣、宋锦、剪纸等）、文旅（观前街、苏州园林、瞻园、夫子庙等）、高校（东大、南大、苏大等）等合作。与某非遗资源合作推出的游戏版本皮肤，成功登上社媒热搜榜，实现年度商业化销售top1的业绩，并获得官媒宣传报道，成功助力产品实现破圈传播，深度占领用户心智。</li>
+          <li contenteditable="false"><strong>区域商业资源与政企项目：</strong>拓展在地高校、科研团队、政府文旅等多方资源，牵头推动国家级科研公益项目落地实施。主导区域内异业商户与本地商圈资源的深度挖掘与整合，负责资源引入、商务洽谈及后续运营管理，为产品整合丰富的外部资源，创造更多商业合作机会与发展空间。</li>
         </ul>
       </div>
 
       <!-- 绿地 -->
       <div class="job">
-        <div class="job-header">
-          <div class="job-company" contenteditable="false">绿地商业集团</div>
+        <div class="job-head">
+          <div class="job-co" contenteditable="false">绿地商业集团</div>
           <div class="job-period" contenteditable="false">2017.06 — 2021.02</div>
         </div>
-        <div class="job-role">管培生（市场研究 / 品牌策略 / 商业体运营）</div>
+        <div class="job-role" contenteditable="false">管培生（轮岗：市场研究 / 品牌策略 / 商业体运营）</div>
         <ul class="job-bullets">
-          <li contenteditable="false">协助高管开展产业地产项目可行性分析、市场定位与产业规划，输出对外合作白皮书。</li>
-          <li contenteditable="false">参与商业综合体项目筹备至运营全流程，覆盖市场分析、招商入驻与品牌推广。</li>
-          <li contenteditable="false">主导新零售项目从概念到落地全链路，具备前期策划到终端执行的完整能力。</li>
+          <li contenteditable="false"><strong>市场研究模块：</strong>协助高管开展产业地产项目的可行性分析、市场定位与产业规划工作。负责组织实施区域调研、竞品分析，并跟进项目前期关键节点，提前识别并梳理潜在风险，推动项目流程顺利落地。同时，协助团队完成事业部对外合作白皮书，负责核心能力梳理、成功案例整合以及材料撰写与输出，为政府及企业合作对接提供有力支持与决策依据。</li>
+          <li contenteditable="false"><strong>商户招商运营：</strong>商业综合体项目轮岗期间，协助项目总全面参与项目从筹备期到运营期的全流程工作，包括市场分析、开发报建、商户招商入驻以及品牌推广等各个核心环节。通过深入参与项目运营的各个阶段，积累了丰富的商业体运营经验，熟悉商业项目运营的关键流程与核心要点。</li>
+          <li contenteditable="false"><strong>新零售业态品牌营销：</strong>主导完成新零售项目从概念构思到落地实施的全链路工作，负责视觉物料设计、产品定位、社媒传播策略制定、选品规划以及线下运营管理等工作，具备从前期策划到终端落地的全链路执行能力。</li>
         </ul>
       </div>
 
-    </section>
-
-    <!-- 其他经历 -->
-    <section class="section">
-      <div class="section-title">其他经历</div>
-      <div class="misc-list">
-        <div class="misc-item" contenteditable="false"><span class="misc-label">淘宝代理商：</span>负责母婴、快消赛道品牌客户招商合作及大事件活动执行，独立承接 3–4 个客户全年合作方案落地。</div>
-        <div class="misc-item" contenteditable="false"><span class="misc-label">省电视台实习记者：</span>策划个人原创栏目，聚焦地产品牌本地项目合作，独立负责商业投放合作。</div>
-        <div class="misc-item" contenteditable="false"><span class="misc-label">美食类自媒体：</span>负责公众号达人内容创作、商家合作及图文视频拍摄，具备内容生产到商业变现全流程经验。</div>
+      <div class="sec-title" style="margin-top:20px;">技能 / 证书及其他</div>
+      <div class="skill-block">
+        <div class="skill-block-label" contenteditable="false">办公工具</div>
+        <p contenteditable="false">熟练PPT制作及美化、熟练使用AI agent工具、音视频剪辑、直播工具；具备数据分析、报告输出能力。</p>
       </div>
-    </section>
+      <div class="skill-block" style="margin-top:10px;">
+        <div class="skill-block-label" contenteditable="false">业务能力</div>
+        <p contenteditable="false">具备产品全周期营销、品牌方与平台两方操盘经验；具备成熟的市场及用户洞察、策略输出、资源拓展能力；拥有峰会统筹、大型会议主持、高层对谈、项目管理的综合能力。</p>
+      </div>
 
-  </main>
+    </main>
+  </div>
 </div>
 
 <script>
 // 头像上传
-const avatarInput = document.getElementById('avatar-input');
+const avatarInput = document.getElementById('avatarInput');
 avatarInput.addEventListener('change', function() {
   const file = this.files[0];
   if (!file) return;
   const reader = new FileReader();
   reader.onload = function(e) {
-    const avatarEl = document.getElementById('avatarEl');
-    document.getElementById('avatarText').style.display = 'none';
-    // 移除旧图片
-    const oldImg = avatarEl.querySelector('img');
-    if (oldImg) oldImg.remove();
-    const img = document.createElement('img');
-    img.src = e.target.result;
-    avatarEl.insertBefore(img, avatarEl.querySelector('.avatar-hint'));
-    // 存到 localStorage 下次访问还在
+    setAvatar(e.target.result);
     localStorage.setItem('resume_avatar', e.target.result);
   };
   reader.readAsDataURL(file);
 });
 
-// 恢复头像
-const savedAvatar = localStorage.getItem('resume_avatar');
-if (savedAvatar) {
-  const avatarEl = document.getElementById('avatarEl');
+function setAvatar(src) {
+  const el = document.getElementById('avatarEl');
   document.getElementById('avatarText').style.display = 'none';
+  const old = el.querySelector('img');
+  if (old) old.remove();
   const img = document.createElement('img');
-  img.src = savedAvatar;
-  avatarEl.insertBefore(img, avatarEl.querySelector('.avatar-hint'));
+  img.src = src;
+  el.insertBefore(img, el.querySelector('.avatar-overlay'));
 }
 
-// 编辑模式切换
+const saved = localStorage.getItem('resume_avatar');
+if (saved) setAvatar(saved);
+
+// 编辑模式
 function toggleEdit() {
-  const body = document.body;
-  const btn = document.getElementById('editToggle');
-  const isEditing = body.classList.toggle('editing');
-  // 切换所有 contenteditable
+  const on = document.body.classList.toggle('editing');
   document.querySelectorAll('[contenteditable]').forEach(el => {
-    el.contentEditable = isEditing ? 'true' : 'false';
+    el.contentEditable = on ? 'true' : 'false';
   });
-  btn.textContent = isEditing ? '✅ 完成编辑' : '✏️ 编辑文字';
-  btn.classList.toggle('active', isEditing);
+  const btn = document.getElementById('editBtn');
+  btn.textContent = on ? '✅ 完成编辑' : '✏️ 编辑文字';
+  btn.classList.toggle('on', on);
 }
 </script>
 
