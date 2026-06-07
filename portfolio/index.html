@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>袁梦 · 整合营销</title>
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --white: #ffffff;
+      --gray-1: #111111;
+      --gray-2: #1a1a1a;
+      --gray-3: #2a2a2a;
+      --gray-4: #444444;
+      --gray-5: #888888;
+      --gray-6: #bbbbbb;
+      --gray-7: #e8e8e8;
+      --accent: #c8a96e;        /* 金色，高端感 */
+      --accent-2: #e8c887;
+      --blue: #4a90d9;
+      --font: 'PingFang SC', 'Noto Sans SC', -apple-system, sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--black);
+      color: var(--white);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── 滚动条 ── */
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    /* ══════════════════════════════════════
+       NAV
+    ══════════════════════════════════════ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(200,169,110,0.15);
+      transition: padding 0.3s;
+    }
+    .nav-logo {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--white);
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 36px; }
+    .nav-links a {
+      font-size: 13px;
+      color: var(--gray-5);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      padding: 7px 18px;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-cta:hover { background: var(--accent); color: var(--black); }
+
+    /* ══════════════════════════════════════
+       HERO — 首屏
+    ══════════════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 60px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 背景网格 */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(200,169,110,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,169,110,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+    /* 中心光晕 */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(200,169,110,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      position: relative; z-index: 1;
+    }
+
+    /* 头像 */
+    .hero-avatar {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      margin: 0 auto 28px;
+      background: var(--gray-3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: 700;
+      color: var(--accent);
+      position: relative; z-index: 1;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .hero-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* 主标题 */
+    .hero-name {
+      font-size: clamp(48px, 7vw, 88px);
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      line-height: 1.0;
+      margin-bottom: 20px;
+      position: relative; z-index: 1;
+    }
+    .hero-name .en { color: var(--gray-4); font-size: 0.55em; display: block; letter-spacing: 0.2em; margin-bottom: 8px; }
+
+    /* 定位句 */
+    .hero-tagline {
+      font-size: clamp(16px, 2.5vw, 22px);
+      color: var(--gray-5);
+      max-width: 640px;
+      margin: 0 auto 16px;
+      position: relative; z-index: 1;
+      line-height: 1.65;
+    }
+    .hero-tagline strong { color: var(--accent); font-weight: 600; }
+
+    /* 副句 */
+    .hero-sub {
+      font-size: 13px;
+      color: var(--gray-4);
+      letter-spacing: 0.05em;
+      margin-bottom: 48px;
+      position: relative; z-index: 1;
+    }
+
+    /* 按钮组 */
+    .hero-btns {
+      display: flex; gap: 16px;
+      position: relative; z-index: 1;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--black);
+      font-size: 13px; font-weight: 700;
+      padding: 14px 32px;
+      border-radius: 4px;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--accent-2); transform: translateY(-2px); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--gray-5);
+      font-size: 13px; font-weight: 500;
+      padding: 14px 32px;
+      border-radius: 4px;
+      border: 1px solid var(--gray-3);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    /* 数字滚动条 */
+    .hero-stats {
+      display: flex; gap: 60px;
+      margin-top: 80px;
+      position: relative; z-index: 1;
+      padding-top: 40px;
+      border-top: 1px solid var(--gray-3);
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-size: 36px; font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label { font-size: 11px; color: var(--gray-5); letter-spacing: 0.1em; }
+
+    /* scroll hint */
+    .scroll-hint {
+      position: absolute;
+      bottom: 36px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column;
+      align-items: center; gap: 6px;
+      color: var(--gray-4); font-size: 11px;
+      letter-spacing: 0.1em;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+    .scroll-hint svg { opacity: 0.4; }
+
+    /* ══════════════════════════════════════
+       SECTION 通用
+    ══════════════════════════════════════ */
+    section {
+      padding: 100px 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .sec-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .sec-label::before {
+      content: '';
+      width: 24px; height: 1px;
+      background: var(--accent);
+    }
+    .sec-title {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+    .sec-desc {
+      font-size: 15px;
+      color: var(--gray-5);
+      max-width: 540px;
+      line-height: 1.75;
+      margin-bottom: 60px;
+    }
+
+    /* ══════════════════════════════════════
+       ABOUT — 关于我
+    ══════════════════════════════════════ */
+    #about { border-top: 1px solid var(--gray-3); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .about-text p {
+      font-size: 15px;
+      color: var(--gray-6);
+      line-height: 1.85;
+      margin-bottom: 20px;
+    }
+    .about-text p strong { color: var(--white); font-weight: 600; }
+    .about-text p em { color: var(--accent); font-style: normal; }
+
+    .about-cards { display: flex; flex-direction: column; gap: 16px; }
+    .about-card {
+      background: var(--gray-2);
+      border: 1px solid var(--gray-3);
+      border-radius: 8px;
+      padding: 20px 24px;
+      transition: border-color 0.2s;
+    }
+    .about-card:hover { border-color: var(--accent); }
+    .about-card-icon { font-size: 20px; margin-bottom: 8px; }
+    .about-card-title { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+    .about-card-text { font-size: 12px; color: var(--gray-5); line-height: 1.6; }
+
+    /* ══════════════════════════════════════
+       CASES — 代表案例
+    ══════════════════════════════════════ */
+    #cases { border-top: 1px solid var(--gray-3); }
+    .cases-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .case-card {
+      background: var(--gray-2);
+      border: 1px solid var(--gray-3);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+    }
+    .case-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+
+    .case-thumb {
+      height: 180px;
+      background: var(--gray-3);
+      position: relative;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .case-thumb-placeholder {
+      font-size: 48px;
+      opacity: 0.25;
+    }
+    .case-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    .case-tag {
+      position: absolute; top: 12px; left: 12px;
+      background: rgba(200,169,110,0.9);
+      color: var(--black);
+      font-size: 10px; font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 3px;
+      letter-spacing: 0.05em;
+    }
+
+    .case-body { padding: 20px 22px 24px; }
+    .case-brand { font-size: 11px; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 6px; }
+    .case-name { font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 8px; line-height: 1.35; }
+    .case-desc { font-size: 12px; color: var(--gray-5); line-height: 1.65; margin-bottom: 14px; }
+    .case-metrics { display: flex; gap: 16px; }
+    .case-metric-val { font-size: 18px; font-weight: 800; color: var(--accent); line-height: 1; }
+    .case-metric-label { font-size: 10px; color: var(--gray-5); margin-top: 2px; }
+
+    /* 大案例 (featured) */
+    .case-card.featured {
+      grid-column: span 2;
+    }
+    .case-card.featured .case-thumb { height: 240px; }
+
+    /* ══════════════════════════════════════
+       TIMELINE — 职业经历
+    ══════════════════════════════════════ */
+    #career { border-top: 1px solid var(--gray-3); }
+    .timeline { position: relative; padding-left: 32px; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 8px; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+    .tl-item { margin-bottom: 52px; position: relative; }
+    .tl-item:last-child { margin-bottom: 0; }
+    .tl-dot {
+      position: absolute;
+      left: -36px; top: 6px;
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--black);
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+    .tl-period {
+      font-size: 11px; color: var(--accent);
+      letter-spacing: 0.1em; margin-bottom: 6px;
+    }
+    .tl-co {
+      font-size: 20px; font-weight: 800;
+      color: var(--white); margin-bottom: 3px;
+    }
+    .tl-role {
+      font-size: 13px; color: var(--gray-5);
+      margin-bottom: 14px;
+    }
+    .tl-points { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .tl-points li {
+      font-size: 13.5px; color: var(--gray-6);
+      padding-left: 16px; position: relative;
+      line-height: 1.7;
+    }
+    .tl-points li::before {
+      content: '→';
+      position: absolute; left: 0;
+      color: var(--accent); font-size: 11px;
+      top: 2px;
+    }
+    .tl-points li strong { color: var(--white); font-weight: 600; }
+    .tl-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+    .tl-tag {
+      background: rgba(200,169,110,0.08);
+      border: 1px solid rgba(200,169,110,0.2);
+      border-radius: 3px;
+      padding: 2px 10px;
+      font-size: 11px; color: var(--accent);
+    }
+
+    /* ══════════════════════════════════════
+       SKILLS — 能力图谱
+    ══════════════════════════════════════ */
+    #skills { border-top: 1px solid var(--gray-3); }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .skill-card {
+      background: var(--gray-2);
+      border: 1px solid var(--gray-3);
+      border-radius: 8px;
+      padding: 24px 20px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .skill-card:hover { border-color: rgba(200,169,110,0.4); background: var(--gray-3); }
+    .skill-icon { font-size: 24px; margin-bottom: 12px; }
+    .skill-name { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
+    .skill-desc { font-size: 11.5px; color: var(--gray-5); line-height: 1.6; }
+
+    /* ══════════════════════════════════════
+       CONTACT — 联系
+    ══════════════════════════════════════ */
+    #contact {
+      border-top: 1px solid var(--gray-3);
+      text-align: center;
+      padding-bottom: 120px;
+    }
+    .contact-box {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .contact-quote {
+      font-size: clamp(20px, 3vw, 32px);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.4;
+      margin-bottom: 20px;
+    }
+    .contact-quote span { color: var(--accent); }
+    .contact-sub { font-size: 14px; color: var(--gray-5); margin-bottom: 40px; line-height: 1.7; }
+    .contact-info { display: flex; gap: 32px; justify-content: center; margin-bottom: 40px; }
+    .contact-item { font-size: 13px; color: var(--gray-6); display: flex; align-items: center; gap: 8px; }
+    .contact-item a { color: var(--gray-6); text-decoration: none; }
+    .contact-item a:hover { color: var(--accent); }
+    .download-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent);
+      color: var(--black);
+      font-size: 13px; font-weight: 700;
+      padding: 14px 32px;
+      border-radius: 4px;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .download-link:hover { background: var(--accent-2); transform: translateY(-2px); }
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
+    footer {
+      border-top: 1px solid var(--gray-3);
+      padding: 24px 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-logo { font-size: 13px; color: var(--gray-4); letter-spacing: 2px; }
+    .footer-copy { font-size: 11px; color: var(--gray-4); }
+
+    /* ══════════════════════════════════════
+       响应式
+    ══════════════════════════════════════ */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      section { padding: 60px 24px; }
+      .hero { padding: 100px 24px 60px; }
+      .hero-stats { gap: 32px; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .cases-grid { grid-template-columns: 1fr; }
+      .case-card.featured { grid-column: span 1; }
+      .skills-grid { grid-template-columns: repeat(2, 1fr); }
+      footer { padding: 20px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">袁梦 <span>·</span> YM</div>
+  <div class="nav-links">
+    <a href="#about">关于</a>
+    <a href="#cases">案例</a>
+    <a href="#career">经历</a>
+    <a href="#skills">能力</a>
+    <a href="#contact">联系</a>
+  </div>
+  <a href="#contact" class="nav-cta">下载简历</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <!-- 头像 -->
+  <div class="hero-avatar" id="heroAvatar" onclick="document.getElementById('avatarUpload').click()" title="点击上传头像">
+    <span id="avatarText">袁</span>
+  </div>
+  <input type="file" id="avatarUpload" accept="image/*" style="display:none">
+
+  <div class="hero-eyebrow">Brand · Content · Growth</div>
+
+  <h1 class="hero-name">
+    <span class="en">Yuan Meng</span>
+    袁梦
+  </h1>
+
+  <!-- ⚡ 定位句 — 待最终确认后替换 -->
+  <p class="hero-tagline">
+    我做的不是营销，<strong>我做的是让一辆车变成一种生活方式</strong>
+  </p>
+  <p class="hero-sub">整合营销 · 品牌传播 · 内容生态 · 新能源汽车</p>
+
+  <div class="hero-btns">
+    <a href="#cases" class="btn-primary">查看案例</a>
+    <a href="#career" class="btn-ghost">职业经历</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">8+</div>
+      <div class="stat-label">年整合营销经验</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">400+</div>
+      <div class="stat-label">人直播矩阵操盘</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">10+</div>
+      <div class="stat-label">头部车型操盘</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">TOP1</div>
+      <div class="stat-label">连续5季度全国断层</div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>向下探索</span>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M8 3v10M3 9l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sec-label">About</div>
+  <div class="sec-title">不只懂传播，<br>更懂生意</div>
+  <div class="sec-desc">从平台视角操盘品牌，从品牌视角理解用户</div>
+
+  <div class="about-grid">
+    <div class="about-text">
+      <!-- ✏️ 待填充：自我介绍段落 -->
+      <p>
+        我在<strong>小红书商业化</strong>负责汽车品牌营销，操盘过
+        <em>小米SU7/YU7、极氪007GT/7X、智己L6/LS6</em>
+        等近两年最受关注的新势力车型上市战役。
+      </p>
+      <p>
+        在此之前，我在<strong>特斯拉</strong>用18个月从0搭建400人、60+门店的直播主播矩阵，
+        连续5个季度拿下全国线索<em>断层TOP1</em>。
+      </p>
+      <p>
+        我相信好的营销不是「说」出来的，是<strong>被感受到的</strong>——
+        它让人觉得买的不是产品，而是一种值得拥有的生活。
+      </p>
+      <p>
+        这正是 <em>firefly</em> 在做的事：把车转换为城市生活方式的表达。
+        <strong>这正是我最擅长的战场。</strong>
+      </p>
+    </div>
+
+    <div class="about-cards">
+      <div class="about-card">
+        <div class="about-card-icon">🎯</div>
+        <div class="about-card-title">策略先行，执行落地</div>
+        <div class="about-card-text">从洞察到campaign，从方法论到最终声量，完整操盘，不只交PPT</div>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">📱</div>
+        <div class="about-card-title">懂内容，也懂平台逻辑</div>
+        <div class="about-card-text">平台侧视角 + 品牌侧经验，知道什么内容在哪里有效，为什么有效</div>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">🚀</div>
+        <div class="about-card-title">从0到1的操盘经验</div>
+        <div class="about-card-text">矩阵搭建、方法论制定、体系建设——习惯在没有路的地方走出路</div>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">🏆</div>
+        <div class="about-card-title">结果导向，数据说话</div>
+        <div class="about-card-text">搜索+116%、阅读+141%、连续5季度TOP1——每个结论背后有数字支撑</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASES -->
+<section id="cases">
+  <div class="sec-label">Selected Work</div>
+  <div class="sec-title">代表案例</div>
+  <div class="sec-desc">每个案例背后是一套完整的策略逻辑，不只是漂亮的执行</div>
+
+  <div class="cases-grid">
+
+    <!-- 案例1：小米SU7 featured -->
+    <a class="case-card featured" href="#" onclick="return false">
+      <div class="case-thumb">
+        <!-- 待替换为实际截图 -->
+        <div class="case-thumb-placeholder">🚗</div>
+        <span class="case-tag">整合营销</span>
+      </div>
+      <div class="case-body">
+        <div class="case-brand">小红书 × 小米汽车</div>
+        <div class="case-name">小米SU7 / YU7 上市全链路传播策略</div>
+        <div class="case-desc">
+          基于「长板价值 + 高审美×高情绪×高认同」种草公式，从卡布里蓝色彩洞察切入，
+          打造高端生活方式内容生态，舒淇代言人IP高举高打，实现品牌高端心智渗透。
+        </div>
+        <div class="case-metrics">
+          <div>
+            <div class="case-metric-val">+116%</div>
+            <div class="case-metric-label">站内搜索增长</div>
+          </div>
+          <div>
+            <div class="case-metric-val">+141%</div>
+            <div class="case-metric-label">内容阅读增长</div>
+          </div>
+          <div>
+            <div class="case-metric-val">TOP1</div>
+            <div class="case-metric-label">新势力赛道阅读</div>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <!-- 案例2：极氪 -->
+    <a class="case-card" href="#" onclick="return false">
+      <div class="case-thumb">
+        <div class="case-thumb-placeholder">⚡</div>
+        <span class="case-tag">上市战役</span>
+      </div>
+      <div class="case-body">
+        <div class="case-brand">极氪汽车</div>
+        <div class="case-name">极氪007GT / 7X 平台传播策略</div>
+        <div class="case-desc">待补充核心亮点与数据</div>
+        <div class="case-metrics">
+          <div>
+            <div class="case-metric-val">—</div>
+            <div class="case-metric-label">关键数据</div>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <!-- 案例3：特斯拉矩阵 -->
+    <a class="case-card" href="#" onclick="return false">
+      <div class="case-thumb">
+        <div class="case-thumb-placeholder">⚙️</div>
+        <span class="case-tag">体系搭建</span>
+      </div>
+      <div class="case-body">
+        <div class="case-brand">特斯拉</div>
+        <div class="case-name">400人主播矩阵从0到1</div>
+        <div class="case-desc">
+          独立搭建60+门店、400+主播的直播运营体系，建立培训→考核→激励完整机制，
+          连续5季度全国线索断层TOP1。
+        </div>
+        <div class="case-metrics">
+          <div>
+            <div class="case-metric-val">400+</div>
+            <div class="case-metric-label">人矩阵规模</div>
+          </div>
+          <div>
+            <div class="case-metric-val">5季度</div>
+            <div class="case-metric-label">断层全国TOP1</div>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <!-- 案例4：腾讯非遗 -->
+    <a class="case-card" href="#" onclick="return false">
+      <div class="case-thumb">
+        <div class="case-thumb-placeholder">🎮</div>
+        <span class="case-tag">跨界营销</span>
+      </div>
+      <div class="case-body">
+        <div class="case-brand">腾讯游戏</div>
+        <div class="case-name">非遗联名破圈——苏绣 × 游戏皮肤</div>
+        <div class="case-desc">
+          联合苏绣、宋锦等非遗资源推出游戏皮肤，成功登上社媒热搜，
+          获官媒报道，实现年度商业化销售TOP1。
+        </div>
+        <div class="case-metrics">
+          <div>
+            <div class="case-metric-val">TOP1</div>
+            <div class="case-metric-label">年度商业化销售</div>
+          </div>
+          <div>
+            <div class="case-metric-val">热搜</div>
+            <div class="case-metric-label">社媒传播破圈</div>
+          </div>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- CAREER -->
+<section id="career">
+  <div class="sec-label">Experience</div>
+  <div class="sec-title">职业经历</div>
+  <div class="sec-desc">每一段经历都在拓宽「整合」的边界</div>
+
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">2025.03 — 至今</div>
+      <div class="tl-co">小红书</div>
+      <div class="tl-role">商业化 · 汽车行业品牌营销</div>
+      <ul class="tl-points">
+        <li>操盘 <strong>小米SU7/YU7、极氪007GT/7X、智己L6/LS6</strong> 等头部车型上市传播策略，实现搜索+116%、阅读+141%，新势力赛道TOP1</li>
+        <li>主导行业营销方法论专项（TTT），输出汽车行业白皮书，在平台官方号对外发布</li>
+        <li>多次统筹品牌T2T高层对谈，议题设计与材料包装</li>
+      </ul>
+      <div class="tl-tags">
+        <span class="tl-tag">整合营销</span>
+        <span class="tl-tag">品牌策略</span>
+        <span class="tl-tag">平台侧操盘</span>
+        <span class="tl-tag">行业方法论</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">待补充 — 待补充</div>
+      <div class="tl-co">字节跳动</div>
+      <div class="tl-role">B端品牌传播（待填充）</div>
+      <ul class="tl-points">
+        <li>待你提供经历细节后填充</li>
+      </ul>
+      <div class="tl-tags">
+        <span class="tl-tag">B端营销</span>
+        <span class="tl-tag">品牌建设</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">2023.01 — 2024.05</div>
+      <div class="tl-co">特斯拉</div>
+      <div class="tl-role">社媒传播与用户运营</div>
+      <ul class="tl-points">
+        <li>从0搭建<strong>400人、60+门店</strong>主播矩阵，建立完整培训→考核→激励机制</li>
+        <li>连续<strong>5个季度</strong>全国线索、订单、爆款内容<strong>断层TOP1</strong></li>
+        <li>主导Cybertruck国内巡展、Model 3焕新版等重点车型上市社媒传播</li>
+        <li>Tesla Life电商运营，多场次无投流高GMV，超额100%完成目标</li>
+        <li>入职半年获评「星耀飞行员」，公司非销售岗首位</li>
+      </ul>
+      <div class="tl-tags">
+        <span class="tl-tag">矩阵搭建</span>
+        <span class="tl-tag">直播运营</span>
+        <span class="tl-tag">用户运营</span>
+        <span class="tl-tag">电商</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">2021.05 — 2022.10</div>
+      <div class="tl-co">腾讯游戏</div>
+      <div class="tl-role">数字与品牌生态营销</div>
+      <ul class="tl-points">
+        <li>联合非遗资源（苏绣、宋锦）推出游戏皮肤，登上社媒热搜，年度商业化<strong>TOP1</strong></li>
+        <li>搭建达人+主播+校园立体化触达体系，低成本规模化增长</li>
+        <li>推动国家级科研公益项目落地，拓展政企资源</li>
+      </ul>
+      <div class="tl-tags">
+        <span class="tl-tag">跨界营销</span>
+        <span class="tl-tag">KOL运营</span>
+        <span class="tl-tag">本地化策略</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">2017.06 — 2021.02</div>
+      <div class="tl-co">绿地商业集团</div>
+      <div class="tl-role">管培生（市场研究 / 品牌策略 / 商业体运营）</div>
+      <ul class="tl-points">
+        <li>参与产业地产项目可行性分析、市场定位与产业规划，输出对外合作白皮书</li>
+        <li>主导新零售业态从概念到落地全链路</li>
+      </ul>
+      <div class="tl-tags">
+        <span class="tl-tag">商业策略</span>
+        <span class="tl-tag">新零售</span>
+        <span class="tl-tag">市场研究</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="sec-label">Capabilities</div>
+  <div class="sec-title">能力图谱</div>
+  <div class="sec-desc">策略 × 内容 × 执行，三角缺一不可</div>
+
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-icon">🎯</div>
+      <div class="skill-name">品牌整合营销</div>
+      <div class="skill-desc">车型上市战役、年度品牌campaign、大事件策划与执行</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🔍</div>
+      <div class="skill-name">用户洞察</div>
+      <div class="skill-desc">情绪洞察、人群分层、交易路径分析，用数据找机会</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">📝</div>
+      <div class="skill-name">内容策略</div>
+      <div class="skill-desc">品牌叙事、社媒内容体系、KOL/KFS运营、种草逻辑</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">📡</div>
+      <div class="skill-name">渠道运营</div>
+      <div class="skill-desc">直播矩阵、主播孵化、KOS体系搭建与规模化复制</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🤝</div>
+      <div class="skill-name">高层对接</div>
+      <div class="skill-desc">T2T战略对谈、行业峰会统筹、白皮书与方法论输出</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">📊</div>
+      <div class="skill-name">数据分析</div>
+      <div class="skill-desc">传播数据复盘、效果度量、指标体系建设与优化</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🤖</div>
+      <div class="skill-name">AI 工具应用</div>
+      <div class="skill-desc">AI Agent辅助决策，将新技术真正嵌入营销工作流</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🚗</div>
+      <div class="skill-name">汽车行业认知</div>
+      <div class="skill-desc">新势力品牌、高端化策略、生活方式叙事，平台+品牌双视角</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-box">
+    <div class="sec-label" style="justify-content:center">Contact</div>
+    <div class="contact-quote">
+      如果你在找一个<span>真正能把车卖成生活方式</span>的人——
+    </div>
+    <p class="contact-sub">
+      我们或许可以聊聊。<br>
+      不只是投简历，而是看看我们能一起做什么。
+    </p>
+    <div class="contact-info">
+      <div class="contact-item">📱 <a href="tel:17316500306">173 1650 0306</a></div>
+      <div class="contact-item">✉️ <a href="mailto:2429142813@qq.com">2429142813@qq.com</a></div>
+    </div>
+    <a href="resume-yuanmeng.html" class="download-link" target="_blank">
+      ⬇ 下载完整简历 PDF
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">袁梦 · YUAN MENG</div>
+  <div class="footer-copy">整合营销 · 品牌传播 · 内容生态</div>
+</footer>
+
+<script>
+// 头像上传
+document.getElementById('avatarUpload').addEventListener('change', function() {
+  const file = this.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const el = document.getElementById('heroAvatar');
+    document.getElementById('avatarText').style.display = 'none';
+    const old = el.querySelector('img');
+    if (old) old.remove();
+    const img = document.createElement('img');
+    img.src = e.target.result;
+    el.insertBefore(img, el.lastChild);
+    localStorage.setItem('ym_avatar', e.target.result);
+  };
+  reader.readAsDataURL(file);
+});
+
+// 恢复头像
+const savedAvatar = localStorage.getItem('ym_avatar');
+if (savedAvatar) {
+  const el = document.getElementById('heroAvatar');
+  document.getElementById('avatarText').style.display = 'none';
+  const img = document.createElement('img');
+  img.src = savedAvatar;
+  el.insertBefore(img, el.lastChild);
+}
+
+// Nav 滚动缩小
+window.addEventListener('scroll', () => {
+  document.querySelector('nav').style.padding =
+    window.scrollY > 50 ? '12px 60px' : '20px 60px';
+});
+</script>
+
+</body>
+</html>
